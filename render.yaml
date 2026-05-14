@@ -1,0 +1,10 @@
+staticSites:
+  - type: web
+    name: cg-dashboard
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
+    headers:
+      - path: "/*"
+        name: "Cache-Control"
+        value: "public, max-age=300"
