@@ -179,11 +179,18 @@ def build_html(events, stats, safety_incidents):
     # ── Safety
     safety_rows = ''
     if safety_incidents:
-        for inc in safety_incidents:
+        for idx, inc in enumerate(safety_incidents):
+            sid = esc(inc.get('id') or f'safety-{idx}')
+            subj = esc(inc.get('subject',''))[:80]
+            frm = esc(inc.get('from','Unknown'))
+            date = inc.get('date','')
+            desc = esc(inc.get('body','')).replace('\n',' ')[:140]
             safety_rows += f'''
-        <div class="item urgent">
-            <div class="item-title">⚠️ {esc(inc.get('subject',''))[:60]} <span class="chevron">▸</span></div>
-            <div class="item-meta">{esc(inc.get('from','Unknown'))} · {inc.get('date','')}</div>
+        <div class="item urgent" data-id="{sid}">
+            <div class="item-title">⚠️ {subj} <span class="chevron">▸</span></div>
+            <div class="item-meta">{frm} · {date}</div>
+            <div class="item-desc">{desc}</div>
+            <div class="item-action"><label><input type="checkbox" class="followup-checkbox" data-id="{sid}"> Followed up</label></div>
         </div>'''
     else:
         safety_rows = '<div class="item"><div class="item-title">✅ No safety incidents</div></div>'
@@ -288,19 +295,32 @@ def build_html(events, stats, safety_incidents):
   </div>
 </div>
 <script>
-  // simple expand on click
-  document.querySelectorAll('.item-title').forEach(el => {{
-    el.addEventListener('click', () => {{
-      const item = el.closest('.item');
+  // expand items on click (compatible with Python f-strings)
+  document.querySelectorAll('.item-title').forEach(function(el) {{
+    el.addEventListener('click', function() {{
+      var item = el.closest(''.concat('.','item'));
       item.classList.toggle('expanded');
+    }});
+  }});
+
+  // Follow-up checkbox wiring
+  document.querySelectorAll('.followup-checkbox').forEach(function(cb) {{
+    cb.addEventListener('change', function(e) {{
+      var id = cb.dataset.id;
+      var val = cb.checked;
+      try {{
+        fetch('/followup', {{method:'POST', headers:{{'Content-Type':'application/json','Authorization':'Bearer NHw2uWJqP9d58JsyScwa0hsXY1j1zkAiLT0QJmpIJNg'}}, body: JSON.stringify({{id:id, action: val ? 'reviewed' : 'unreviewed'}})}});
+      }} catch (err) {{
+        alert('Failed to save follow-up');
+        cb.checked = !val;
+      }}
     }});
   }});
 </script>
 </body>
 </html>'''
 
-# ── main ──────────────────────────────────────────────────────────────────────
-
+# ── main ─────────────────
 def main():
     print('Fetching calendar…')
     events = get_calendar()
