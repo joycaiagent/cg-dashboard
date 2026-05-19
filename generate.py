@@ -102,7 +102,9 @@ def get_ops_health():
     hlabel = 'Healthy' if h == 'green' else 'Watch' if h == 'yellow' else 'Alert'
     by_branch = {}
     for w in tickets:
-        b = w.get('BranchName') or 'Unknown'
+        b = w.get('BranchName')
+        if not b:
+            continue
         if b not in by_branch:
             by_branch[b] = {'total': 0, 'complete': 0, 'open': 0, 'canceled': 0}
         by_branch[b]['total'] += 1
@@ -184,13 +186,15 @@ def build_html(events, stats, safety_incidents):
             subj = esc(inc.get('subject',''))[:80]
             frm = esc(inc.get('from','Unknown'))
             date = inc.get('date','')
-            desc = esc(inc.get('body','')).replace('\n',' ')[:140]
+            body_plain = esc(inc.get('body','')).replace('\n','<br>')
             safety_rows += f'''
         <div class="item urgent" data-id="{sid}">
-            <div class="item-title">⚠️ {subj} <span class="chevron">▸</span></div>
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ {subj} <span class="chevron">▸</span></div>
             <div class="item-meta">{frm} · {date}</div>
-            <div class="item-desc">{desc}</div>
-            <div class="item-action"><label><input type="checkbox" class="followup-checkbox" data-id="{sid}"> Followed up</label></div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:10px;">{body_plain or 'No additional details available.'}</div>
+                <button class="review-btn" onclick="reviewIncident(this,'{sid}')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+            </div>
         </div>'''
     else:
         safety_rows = '<div class="item"><div class="item-title">✅ No safety incidents</div></div>'
@@ -318,13 +322,46 @@ def build_html(events, stats, safety_incidents):
     }});
   }});
 
+  // Safety: toggle details open/closed
+  function toggleSafetyDetail(el) {{
+    var detail = el.parentElement.querySelector('.safety-detail');
+    if (!detail) return;
+    document.querySelectorAll('.safety-detail').forEach(function(d) {{ d.style.display = 'none'; }});
+    detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+  }}
+
+  // Safety: review & close incident
+  function reviewIncident(btn, id) {{
+    btn.textContent = '⏳ Saving...';
+    btn.disabled = true;
+    fetch('/api/incident/review', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/x-www-form-urlencoded'}},
+      body: 'id=' + encodeURIComponent(id)
+    }}).then(function(res) {{ return res.json(); }})
+      .then(function(data) {{
+        if (data.success) {{
+          var item = btn.closest('.item');
+          if (item) item.remove();
+        }} else {{
+          btn.textContent = '✅ Review & Close';
+          btn.disabled = false;
+          alert('Failed: ' + (data.error || 'unknown'));
+        }}
+      }}).catch(function(e) {{
+        btn.textContent = '✅ Review & Close';
+        btn.disabled = false;
+        alert('Error: ' + e.message);
+      }});
+  }}
+
   // Follow-up checkbox wiring
   document.querySelectorAll('.followup-checkbox').forEach(function(cb) {{
     cb.addEventListener('change', function(e) {{
       var id = cb.dataset.id;
       var val = cb.checked;
       try {{
-        fetch('/followup', {{method:'POST', headers:{{'Content-Type':'application/json','Authorization':'Bearer NHw2uWJqP9d58JsyScwa0hsXY1j1zkAiLT0QJmpIJNg'}}, body: JSON.stringify({{id:id, action: val ? 'reviewed' : 'unreviewed'}})}});
+        fetch('/followup', {{method:'POST', headers:{{'Content-Type':'application/json','Authorization':'Bearer…IJNg'}}, body: JSON.stringify({{id:id, action: val ? 'reviewed' : 'unreviewed'}})}});
       }} catch (err) {{
         alert('Failed to save follow-up');
         cb.checked = !val;
