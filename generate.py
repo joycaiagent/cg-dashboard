@@ -217,9 +217,12 @@ def build_html(events, stats, safety_incidents):
   *{{box-sizing:border-box;margin:0;padding:0}}
   body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
        background:#0a1929;color:#e0e6ed;min-height:100vh;padding:20px}}
-  .container{{max-width:1100px;margin:0 auto}}
-  header{{text-align:center;padding:20px 0;border-bottom:1px solid #1e3a5f;margin-bottom:30px}}
-  h1{{color:#00d4aa;font-size:1.8rem}} .subtitle{{color:#7a8c9e;margin-top:5px}}
+  .container{{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}}
+  header{{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #1e3a5f;margin-bottom:30px}}
+  h1{{color:#00d4aa;font-size:1.8rem;margin:0}} .subtitle{{color:#7a8c9e;margin-top:4px}}
+  .refresh-btn{{background:#00d4aa;color:#0a1929;border:none;padding:10px 20px;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;white-space:nowrap}}
+  .refresh-btn:hover{{background:#00eebb}}
+  .refresh-btn.loading{{opacity:0.6;pointer-events:none}}
   .grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}}
   .card{{background:#112240;border-radius:12px;padding:20px;border:1px solid #1e3a5f}}
   .card h2{{color:#00d4aa;font-size:1rem;margin-bottom:15px;display:flex;align-items:center;gap:8px}}
@@ -251,8 +254,11 @@ def build_html(events, stats, safety_incidents):
 <body>
 <div class="container">
   <header>
-    <h1>🌿 CG Landscape — Daily Ops</h1>
-    <div class="subtitle">{today}</div>
+    <div>
+      <h1>🌿 CG Landscape — Daily Ops</h1>
+      <div class="subtitle">{today}</div>
+    </div>
+    <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
 
   <div class="grid">
@@ -290,11 +296,20 @@ def build_html(events, stats, safety_incidents):
     </div>
   </div>
 
-  <div class="footer">
+  <div class="footer" id="footer">
     Refreshed {datetime.datetime.now().strftime('%b %d %Y %I:%M %p PT')}
   </div>
 </div>
 <script>
+  function hardRefresh() {{
+    var btn = document.getElementById('refreshBtn');
+    btn.classList.add('loading');
+    btn.textContent = '⏳ Refreshing...';
+    fetch('/api/refresh', {{method:'POST'}}).catch(function() {{}}).finally(function() {{
+      setTimeout(function() {{ window.location.reload(true); }}, 800);
+    }});
+  }}
+
   // expand items on click (compatible with Python f-strings)
   document.querySelectorAll('.item-title').forEach(function(el) {{
     el.addEventListener('click', function() {{
