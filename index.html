@@ -8,9 +8,12 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
        background:#0a1929;color:#e0e6ed;min-height:100vh;padding:20px}
-  .container{max-width:1100px;margin:0 auto}
-  header{text-align:center;padding:20px 0;border-bottom:1px solid #1e3a5f;margin-bottom:30px}
-  h1{color:#00d4aa;font-size:1.8rem} .subtitle{color:#7a8c9e;margin-top:5px}
+  .container{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
+  header{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #1e3a5f;margin-bottom:30px}
+  h1{color:#00d4aa;font-size:1.8rem;margin:0} .subtitle{color:#7a8c9e;margin-top:4px}
+  .refresh-btn{background:#00d4aa;color:#0a1929;border:none;padding:10px 20px;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;white-space:nowrap}
+  .refresh-btn:hover{background:#00eebb}
+  .refresh-btn.loading{opacity:0.6;pointer-events:none}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
   .card{background:#112240;border-radius:12px;padding:20px;border:1px solid #1e3a5f}
   .card h2{color:#00d4aa;font-size:1rem;margin-bottom:15px;display:flex;align-items:center;gap:8px}
@@ -42,8 +45,11 @@
 <body>
 <div class="container">
   <header>
-    <h1>🌿 CG Landscape — Daily Ops</h1>
-    <div class="subtitle">Tuesday, May 19, 2026</div>
+    <div>
+      <h1>🌿 CG Landscape — Daily Ops</h1>
+      <div class="subtitle">Tuesday, May 19, 2026</div>
+    </div>
+    <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
 
   <div class="grid">
@@ -55,8 +61,8 @@
             <div class="item-meta">📍 </div>
         </div>
         <div class="item" id="sched-1">
-            <div class="item-title">10:30 — Meeting with Matt AI <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+            <div class="item-title">09:00 — Capsa AI features walkthrough <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 https://meet.google.com/qqt-wqva-wfh</div>
         </div>
         <div class="item" id="sched-2">
             <div class="item-title">10:00 — Las Flores II Landscape Walk  <span class="chevron">▸</span></div>
@@ -70,43 +76,47 @@
             <div class="item-title">10:00 — Weathermatic: CG Landscape (Business Review and Controller Audit- Continued) <span class="chevron">▸</span></div>
             <div class="item-meta">📍 Microsoft Teams Meeting</div>
         </div>
+        <div class="item" id="sched-5">
+            <div class="item-title">11:00 — Weekly sales Call  <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+        </div>
     </div>
 
     <div class="card">
       <h2><span class="emoji">📊</span> This Week Ops Health</h2>
       <div class="health-card">
         <div class="health-status">Alert</div>
-        <div class="health-rate">16%</div>
+        <div class="health-rate">21%</div>
         <div class="health-meta">Week of 2026-05-18 → 2026-05-19</div>
       </div>
       <div class="stats-grid">
-        <div class="stat-item"><div class="stat-value">48</div><div class="stat-label">Done</div></div>
+        <div class="stat-item"><div class="stat-value">64</div><div class="stat-label">Done</div></div>
         <div class="stat-item"><div class="stat-value">1</div><div class="stat-label">Canceled</div></div>
-        <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">Open</div></div>
-        <div class="stat-item"><div class="stat-value">292</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-value">9</div><div class="stat-label">Open</div></div>
+        <div class="stat-item"><div class="stat-value">307</div><div class="stat-label">Total</div></div>
       </div>
-      <div class="stat-revenue">Scheduled: <strong>$174,660</strong></div>
+      <div class="stat-revenue">Scheduled: <strong>$174,444</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
       
             <div class="branch-row">
                 <div class="branch-name">Anaheim</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:2%;background:#ef4444;"></div></div>
-                <div class="branch-pct">2% (2/127)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:8%;background:#ef4444;"></div></div>
+                <div class="branch-pct">8% (10/131)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">San Bernardino</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:44%;background:#ef4444;"></div></div>
-                <div class="branch-pct">44% (32/72)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:42%;background:#ef4444;"></div></div>
+                <div class="branch-pct">42% (32/77)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Los Angeles</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:4%;background:#ef4444;"></div></div>
-                <div class="branch-pct">4% (2/49)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:14%;background:#ef4444;"></div></div>
+                <div class="branch-pct">14% (7/51)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Corona</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:28%;background:#ef4444;"></div></div>
-                <div class="branch-pct">28% (12/43)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:32%;background:#ef4444;"></div></div>
+                <div class="branch-pct">32% (15/47)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Unknown</div>
@@ -144,11 +154,20 @@
     </div>
   </div>
 
-  <div class="footer">
-    Refreshed May 19 2026 10:01 AM PT
+  <div class="footer" id="footer">
+    Refreshed May 19 2026 04:18 PM PT
   </div>
 </div>
 <script>
+  function hardRefresh() {
+    var btn = document.getElementById('refreshBtn');
+    btn.classList.add('loading');
+    btn.textContent = '⏳ Refreshing...';
+    fetch('/api/refresh', {method:'POST'}).catch(function() {}).finally(function() {
+      setTimeout(function() { window.location.reload(true); }, 800);
+    });
+  }
+
   // expand items on click (compatible with Python f-strings)
   document.querySelectorAll('.item-title').forEach(function(el) {
     el.addEventListener('click', function() {
