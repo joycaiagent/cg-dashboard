@@ -55,7 +55,35 @@
   <div class="grid">
     <div class="card">
       <h2><span class="emoji">📅</span> Next 3 Days</h2>
-      <div class="item"><div class="item-title">No events scheduled</div></div>
+      
+        <div class="item" id="sched-0">
+            <div class="item-title">May 19, 2026 00:00 — Edgar's Vacations <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 </div>
+        </div>
+        <div class="item" id="sched-1">
+            <div class="item-title">May 20, 2026 07:30 — Re: April 2026 P&amp;L irrigation  <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+        </div>
+        <div class="item" id="sched-2">
+            <div class="item-title">May 20, 2026 09:00 — Capsa AI features walkthrough <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 https://meet.google.com/qqt-wqva-wfh</div>
+        </div>
+        <div class="item" id="sched-3">
+            <div class="item-title">May 20, 2026 10:00 — Las Flores II Landscape Walk  <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 5 Picazo (5 Picazo, Rancho Santa Margarita, California  92688)</div>
+        </div>
+        <div class="item" id="sched-4">
+            <div class="item-title">May 20, 2026 11:00 — C.G. Landscape + Aspire | CSM Mtg <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 </div>
+        </div>
+        <div class="item" id="sched-5">
+            <div class="item-title">May 22, 2026 10:00 — Weathermatic: CG Landscape (Business Review and Controller Audit- Continued) <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+        </div>
+        <div class="item" id="sched-6">
+            <div class="item-title">May 22, 2026 11:00 — Weekly sales Call  <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+        </div>
     </div>
 
     <div class="card">
@@ -98,7 +126,47 @@
 
     <div class="card">
       <h2><span class="emoji">🛡️</span> Safety</h2>
-      <div class="item"><div class="item-title">✅ No safety incidents</div></div>
+      
+        <div class="item urgent" data-id="safety-0">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ FW: Broken Window - The Commons  <span class="chevron">▸</span></div>
+            <div class="item-meta">Jose Contreras · 2026-05-19</div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:10px;">No additional details available.</div>
+                <button class="review-btn" onclick="reviewIncident(this,'safety-0')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+            </div>
+        </div>
+        <div class="item urgent" data-id="safety-1">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ FW: Vicente Molquecho fall 5-19-26 <span class="chevron">▸</span></div>
+            <div class="item-meta">Jose Contreras · 2026-05-19</div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:10px;">No additional details available.</div>
+                <button class="review-btn" onclick="reviewIncident(this,'safety-1')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+            </div>
+        </div>
+        <div class="item urgent" data-id="safety-2">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Re: Incident Report For Osvaldo Soto  <span class="chevron">▸</span></div>
+            <div class="item-meta">Jose Contreras · 2026-05-14</div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:10px;">No additional details available.</div>
+                <button class="review-btn" onclick="reviewIncident(this,'safety-2')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+            </div>
+        </div>
+        <div class="item urgent" data-id="safety-3">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Incident Report For Osvaldo Soto  <span class="chevron">▸</span></div>
+            <div class="item-meta">Jose Contreras · 2026-05-13</div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:10px;">No additional details available.</div>
+                <button class="review-btn" onclick="reviewIncident(this,'safety-3')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+            </div>
+        </div>
+        <div class="item urgent" data-id="safety-4">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Jose Contreras | Injury | 5/11/26  <span class="chevron">▸</span></div>
+            <div class="item-meta">Erika Jauregui · 2026-05-11</div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:10px;">No additional details available.</div>
+                <button class="review-btn" onclick="reviewIncident(this,'safety-4')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+            </div>
+        </div>
     </div>
 
     <div class="card">
