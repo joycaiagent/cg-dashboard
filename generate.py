@@ -85,7 +85,8 @@ def get_ops_health():
     """This week's work ticket stats by branch."""
     today   = datetime.date.today()
     monday  = today - datetime.timedelta(days=today.weekday())
-    start, end = monday.isoformat(), today.isoformat()
+    sunday  = monday + datetime.timedelta(days=6)  # full week Mon→Sun
+    start, end = monday.isoformat(), sunday.isoformat()
     flt = f"ScheduledStartDate ge {start} and ScheduledStartDate le {end}"
     url = f"https://cloud-api.youraspire.com/WorkTickets?$filter={urllib.parse.quote(flt)}&$top=1000&$skip=0"
     tickets = aspire_api(url)
@@ -182,7 +183,9 @@ def build_html(events, stats, safety_incidents):
     safety_rows = ''
     if safety_incidents:
         for idx, inc in enumerate(safety_incidents):
-            sid = esc(inc.get('id') or f'safety-{idx}')
+            # JS-safe: escape for HTML attribute AND JavaScript string literal
+            raw_id = inc.get('id') or f'safety-{idx}'
+            sid = esc(raw_id).replace('\\', '\\\\').replace("'", "\\'")
             subj = esc(inc.get('subject',''))[:80]
             frm = esc(inc.get('from','Unknown'))
             date = inc.get('date','')
