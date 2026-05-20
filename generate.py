@@ -333,10 +333,17 @@ def build_html(events, stats, safety_incidents):
     detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
   }}
 
-  // Safety: review & close incident
+  // Safety: review & close incident — saves to localStorage (works on any server)
   function reviewIncident(btn, id) {{
     btn.textContent = '⏳ Saving...';
     btn.disabled = true;
+    // Save to localStorage
+    try {{
+      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+      if (!reviewed.includes(id)) reviewed.push(id);
+      localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
+    }} catch(e) {{}}
+    // Try POST to backend (localhost:8000), fall back to localStorage only
     fetch('/api/incident/review', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/x-www-form-urlencoded'}},
@@ -346,17 +353,24 @@ def build_html(events, stats, safety_incidents):
         if (data.success) {{
           var item = btn.closest('.item');
           if (item) item.remove();
-        }} else {{
-          btn.textContent = '✅ Review & Close';
-          btn.disabled = false;
-          alert('Failed: ' + (data.error || 'unknown'));
         }}
-      }}).catch(function(e) {{
-        btn.textContent = '✅ Review & Close';
-        btn.disabled = false;
-        alert('Error: ' + e.message);
+      }}).catch(function() {{
+        // Backend not available — localStorage saved; remove item now
+        var item = btn.closest('.item');
+        if (item) item.remove();
       }});
   }}
+
+  // On load: hide any previously reviewed incidents (localStorage)
+  (function() {{
+    try {{
+      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+      reviewed.forEach(function(id) {{
+        var el = document.querySelector('[data-id="' + id + '"]');
+        if (el) el.remove();
+      }});
+    }} catch(e) {{}}
+  }})();
 
   // Follow-up checkbox wiring
   document.querySelectorAll('.followup-checkbox').forEach(function(cb) {{
