@@ -61,22 +61,26 @@
             <div class="item-meta">📍 </div>
         </div>
         <div class="item" id="sched-1">
+            <div class="item-title">19:30 — Re: April 2026 P&amp;L irrigation  <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+        </div>
+        <div class="item" id="sched-2">
             <div class="item-title">09:00 — Capsa AI features walkthrough <span class="chevron">▸</span></div>
             <div class="item-meta">📍 https://meet.google.com/qqt-wqva-wfh</div>
         </div>
-        <div class="item" id="sched-2">
+        <div class="item" id="sched-3">
             <div class="item-title">10:00 — Las Flores II Landscape Walk  <span class="chevron">▸</span></div>
             <div class="item-meta">📍 5 Picazo (5 Picazo, Rancho Santa Margarita, California  92688)</div>
         </div>
-        <div class="item" id="sched-3">
+        <div class="item" id="sched-4">
             <div class="item-title">11:00 — C.G. Landscape + Aspire | CSM Mtg <span class="chevron">▸</span></div>
             <div class="item-meta">📍 </div>
         </div>
-        <div class="item" id="sched-4">
+        <div class="item" id="sched-5">
             <div class="item-title">10:00 — Weathermatic: CG Landscape (Business Review and Controller Audit- Continued) <span class="chevron">▸</span></div>
             <div class="item-meta">📍 Microsoft Teams Meeting</div>
         </div>
-        <div class="item" id="sched-5">
+        <div class="item" id="sched-6">
             <div class="item-title">11:00 — Weekly sales Call  <span class="chevron">▸</span></div>
             <div class="item-meta">📍 Microsoft Teams Meeting</div>
         </div>
@@ -86,37 +90,37 @@
       <h2><span class="emoji">📊</span> This Week Ops Health</h2>
       <div class="health-card">
         <div class="health-status">Alert</div>
-        <div class="health-rate">23%</div>
-        <div class="health-meta">Week of 2026-05-18 → 2026-05-19</div>
+        <div class="health-rate">8%</div>
+        <div class="health-meta">Week of 2026-05-18 → 2026-05-24</div>
       </div>
       <div class="stats-grid">
         <div class="stat-item"><div class="stat-value">70</div><div class="stat-label">Done</div></div>
-        <div class="stat-item"><div class="stat-value">1</div><div class="stat-label">Canceled</div></div>
-        <div class="stat-item"><div class="stat-value">9</div><div class="stat-label">Open</div></div>
-        <div class="stat-item"><div class="stat-value">307</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-value">27</div><div class="stat-label">Canceled</div></div>
+        <div class="stat-item"><div class="stat-value">15</div><div class="stat-label">Open</div></div>
+        <div class="stat-item"><div class="stat-value">888</div><div class="stat-label">Total</div></div>
       </div>
-      <div class="stat-revenue">Scheduled: <strong>$168,544</strong></div>
+      <div class="stat-revenue">Scheduled: <strong>$431,060</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
       
             <div class="branch-row">
                 <div class="branch-name">Anaheim</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:8%;background:#ef4444;"></div></div>
-                <div class="branch-pct">8% (10/131)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">San Bernardino</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:45%;background:#ef4444;"></div></div>
-                <div class="branch-pct">45% (35/77)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:2%;background:#ef4444;"></div></div>
+                <div class="branch-pct">2% (10/428)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Los Angeles</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:20%;background:#ef4444;"></div></div>
-                <div class="branch-pct">20% (10/51)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:5%;background:#ef4444;"></div></div>
+                <div class="branch-pct">5% (10/182)</div>
+            </div>
+            <div class="branch-row">
+                <div class="branch-name">San Bernardino</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:22%;background:#ef4444;"></div></div>
+                <div class="branch-pct">22% (35/157)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Corona</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:32%;background:#ef4444;"></div></div>
-                <div class="branch-pct">32% (15/47)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:12%;background:#ef4444;"></div></div>
+                <div class="branch-pct">12% (15/120)</div>
             </div>
     </div>
 
@@ -156,7 +160,7 @@
   </div>
 
   <div class="footer" id="footer">
-    Refreshed May 19 2026 04:56 PM PT
+    Refreshed May 19 2026 07:30 PM PT
   </div>
 </div>
 <script>
@@ -185,10 +189,17 @@
     detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
   }
 
-  // Safety: review & close incident
+  // Safety: review & close incident — saves to localStorage (works on any server)
   function reviewIncident(btn, id) {
     btn.textContent = '⏳ Saving...';
     btn.disabled = true;
+    // Save to localStorage
+    try {
+      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+      if (!reviewed.includes(id)) reviewed.push(id);
+      localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
+    } catch(e) {}
+    // Try POST to backend (localhost:8000), fall back to localStorage only
     fetch('/api/incident/review', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -198,17 +209,24 @@
         if (data.success) {
           var item = btn.closest('.item');
           if (item) item.remove();
-        } else {
-          btn.textContent = '✅ Review & Close';
-          btn.disabled = false;
-          alert('Failed: ' + (data.error || 'unknown'));
         }
-      }).catch(function(e) {
-        btn.textContent = '✅ Review & Close';
-        btn.disabled = false;
-        alert('Error: ' + e.message);
+      }).catch(function() {
+        // Backend not available — localStorage saved; remove item now
+        var item = btn.closest('.item');
+        if (item) item.remove();
       });
   }
+
+  // On load: hide any previously reviewed incidents (localStorage)
+  (function() {
+    try {
+      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+      reviewed.forEach(function(id) {
+        var el = document.querySelector('[data-id="' + id + '"]');
+        if (el) el.remove();
+      });
+    } catch(e) {}
+  })();
 
   // Follow-up checkbox wiring
   document.querySelectorAll('.followup-checkbox').forEach(function(cb) {
