@@ -1,0 +1,104 @@
+Fetching calendar…
+  → 7 events
+Fetching ops health…
+  → 889 tickets, 16% complete
+Scanning safety emails…
+Safety scan error: [Errno 2] No such file or directory: 'node'
+  → 0 incidents
+Written → /Users/aiagent/.openclaw/workspace/cg-dashboard/index.html (10,402 bytes)
+[main 5d21306] Auto-refresh 2026-05-20 06:00
+ Committer: Joy C <aiagent@Joys-Mac-mini.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 13 insertions(+), 58 deletions(-)
+To github.com:joycaiagent/cg-dashboard.git
+   d3bf289..5d21306  main -> main
+✅ Dashboard refreshed Wed May 20 06:00:17 PDT 2026
+/Users/aiagent/.openclaw/workspace/cg-dashboard/generate.py:69: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start = datetime.datetime.utcnow()
+Fetching calendar…
+  → 4 events
+Fetching ops health…
+  → 915 tickets, 23% complete
+Scanning safety emails…
+Safety scan error: [Errno 2] No such file or directory: 'node'
+  → 0 incidents
+Written → /Users/aiagent/.openclaw/workspace/cg-dashboard/index.html (9,621 bytes)
+[main 758e6ca] 3:30pm safety scan 2026-05-20
+ Committer: Joy C <aiagent@Joys-Mac-mini.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 18 insertions(+), 30 deletions(-)
+To github.com:joycaiagent/cg-dashboard.git
+   5d21306..758e6ca  main -> main
+Fetching calendar…
+  → 4 events
+Fetching ops health…
+  → 919 tickets, 28% complete
+Scanning safety emails…
+  → 3 incidents
+Written → /Users/aiagent/.openclaw/workspace/cg-dashboard/index.html (14,296 bytes)
+[main 034e4dd] Auto-refresh 2026-05-21 06:00
+ Committer: Joy C <aiagent@Joys-Mac-mini.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To github.com:joycaiagent/cg-dashboard.git
+   561b164..034e4dd  main -> main
+✅ Dashboard refreshed Thu May 21 06:00:07 PDT 2026
+/Users/aiagent/.openclaw/workspace/cg-dashboard/generate.py:69: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start = datetime.datetime.utcnow()
+Fetching calendar…
+  → 5 events
+Fetching ops health…
+  → 945 tickets, 35% complete
+Scanning safety emails…
+  → 3 incidents
+Written → /Users/aiagent/.openclaw/workspace/cg-dashboard/index.html (14,538 bytes)
+[main d4758b4] 3:30pm safety scan 2026-05-21
+ Committer: Joy C <aiagent@Joys-Mac-mini.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 18 insertions(+), 14 deletions(-)
+To github.com:joycaiagent/cg-dashboard.git
+   034e4dd..d4758b4  main -> main

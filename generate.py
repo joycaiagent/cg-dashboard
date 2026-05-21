@@ -126,7 +126,37 @@ def get_ops_health():
     }
 
 def get_safety():
-    """Scan inbox for safety-related emails."""
+    """Return unreviewed safety items from state/safety-queue.json.
+    Falls back to running the scanner if the queue is missing.
+    """
+    queue_path = Path.home() / '.openclaw' / 'workspace' / 'state' / 'safety-queue.json'
+    try:
+        if queue_path.exists():
+            with open(queue_path, 'r') as f:
+                q = json.load(f)
+            # return items with status == 'unreviewed'
+            out = []
+            # only include items that look like true safety incidents
+            safety_kw = ['accident','injur','fall','sprain','fractur','ambulance','hospital','first aid','osha','near miss','near-miss','spill','vehicle incident','hazard','cut','lacerat','broken','sprained','sprain','ankle']
+            for it in q:
+                if it.get('status') != 'unreviewed':
+                    continue
+                subj = (it.get('subject') or '').lower()
+                desc = (it.get('description') or '').lower()
+                blob = subj + ' ' + desc
+                if any(k in blob for k in safety_kw):
+                    out.append({
+                        'id': it.get('id'),
+                        'subject': it.get('subject'),
+                        'from': it.get('from'),
+                        'date': it.get('received'),
+                        'description': it.get('description'),
+                        'manager': ''
+                    })
+            return out
+    except Exception as e:
+        print(f'Failed to read safety queue: {e}')
+    # fallback: run the scanner
     try:
         result = subprocess.run(
             ['node', str(Path.home() / '.openclaw/workspace/scripts/scan-safety-emails.js')],
@@ -153,13 +183,17 @@ def build_html(events, stats, safety_incidents):
     if events:
         for i, e in enumerate(events):
             t = e.get('start',{}).get('dateTime','')
-            time = t.split('T')[1][:5] if 'T' in t else 'TBD'
+            date_str = ''
+            if 'T' in t:
+                d = datetime.datetime.strptime(t.split('T')[0], '%Y-%m-%d')
+                date_str = d.strftime('%b %d, %Y')  # e.g. "May 20, 2026"
+            time_str = t.split('T')[1][:5] if 'T' in t else 'TBD'
             loc  = esc(e.get('location',{}).get('displayName',''))
             subj = esc(e.get('subject','No title'))
             eid  = f'sched-{i}'
             sched_rows += f'''
         <div class="item" id="{eid}">
-            <div class="item-title">{time} — {subj} <span class="chevron">▸</span></div>
+            <div class="item-title">{date_str} {time_str} — {subj} <span class="chevron">▸</span></div>
             <div class="item-meta">📍 {loc}</div>
         </div>'''
     else:
@@ -184,17 +218,22 @@ def build_html(events, stats, safety_incidents):
     if safety_incidents:
         for idx, inc in enumerate(safety_incidents):
             # JS-safe: escape for HTML attribute AND JavaScript string literal
-            raw_id = inc.get('id') or f'safety-{idx}'
+            raw_id = inc.get('itemId') or inc.get('id') or f'safety-{idx}'
             sid = esc(raw_id).replace('\\', '\\\\').replace("'", "\\'")
-            subj = esc(inc.get('subject',''))[:80]
+            subj = esc(inc.get('subject','')[:80])
             frm = esc(inc.get('from','Unknown'))
             date = inc.get('date','')
-            body_plain = esc(inc.get('body','')).replace('\n','<br>')
+            manager = esc(inc.get('manager') or '')
+            email_type = inc.get('emailType','')
+            body_plain = esc((inc.get('description') or '').replace('\n', '<br>'))
+            type_badge = '🔄 Forwarded' if email_type == 'forwarded' else ('↩️ Reply' if email_type == 'reply' else '📩 Original')
+            manager_line = f'<div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: {manager}</div>' if manager else ''
             safety_rows += f'''
         <div class="item urgent" data-id="{sid}">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ {subj} <span class="chevron">▸</span></div>
-            <div class="item-meta">{frm} · {date}</div>
+            <div class="item-meta">{type_badge} · {frm} · {date}</div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                {manager_line}
                 <div style="margin-bottom:10px;">{body_plain or 'No additional details available.'}</div>
                 <button class="review-btn" onclick="reviewIncident(this,'{sid}')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
             </div>
