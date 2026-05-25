@@ -24,9 +24,9 @@
   .item-meta{color:#7a8c9e;font-size:0.8rem;margin-top:4px}
   .chevron{margin-left:auto;color:#7a8c9e;font-size:0.8rem}
   .health-card{border-radius:10px;padding:16px;text-align:center;
-               border:1px solid #f59e0b;background:#f59e0b18;margin-bottom:16px}
-  .health-status{font-size:1.2rem;font-weight:700;color:#f59e0b}
-  .health-rate{font-size:1.5rem;font-weight:700;color:#f59e0b;margin:6px 0}
+               border:1px solid #ef4444;background:#ef444418;margin-bottom:16px}
+  .health-status{font-size:1.2rem;font-weight:700;color:#ef4444}
+  .health-rate{font-size:1.5rem;font-weight:700;color:#ef4444;margin:6px 0}
   .health-meta{color:#7a8c9e;font-size:0.8rem}
   .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
   .stat-item{background:#0a1929;border-radius:8px;padding:12px;text-align:center}
@@ -47,7 +47,7 @@
   <header>
     <div>
       <h1>🌿 CG Landscape — Daily Ops</h1>
-      <div class="subtitle">Saturday, May 23, 2026</div>
+      <div class="subtitle">Monday, May 25, 2026</div>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
@@ -55,45 +55,29 @@
   <div class="grid">
     <div class="card">
       <h2><span class="emoji">📅</span> Next 3 Days</h2>
-      <div class="item"><div class="item-title">No events scheduled</div></div>
+      
+        <div class="item" id="sched-0">
+            <div class="item-title">May 27, 2026 10:00 — Las Flores II Landscape Walk  <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 5 Picazo (5 Picazo, Rancho Santa Margarita, California  92688)</div>
+        </div>
     </div>
 
     <div class="card">
       <h2><span class="emoji">📊</span> This Week Ops Health</h2>
       <div class="health-card">
-        <div class="health-status">Watch</div>
-        <div class="health-rate">57%</div>
-        <div class="health-meta">Week of 2026-05-18 → 2026-05-24</div>
+        <div class="health-status">Alert</div>
+        <div class="health-rate">0%</div>
+        <div class="health-meta">Week of 2026-05-25 → 2026-05-31</div>
       </div>
       <div class="stats-grid">
-        <div class="stat-item"><div class="stat-value">552</div><div class="stat-label">Done</div></div>
-        <div class="stat-item"><div class="stat-value">27</div><div class="stat-label">Canceled</div></div>
-        <div class="stat-item"><div class="stat-value">13</div><div class="stat-label">Open</div></div>
-        <div class="stat-item"><div class="stat-value">972</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">Done</div></div>
+        <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">Canceled</div></div>
+        <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">Open</div></div>
+        <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">Total</div></div>
       </div>
-      <div class="stat-revenue">Scheduled: <strong>$218,034</strong></div>
+      <div class="stat-revenue">Scheduled: <strong>$0</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
-      
-            <div class="branch-row">
-                <div class="branch-name">Anaheim</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:55%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">55% (256/469)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">Los Angeles</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:55%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">55% (106/191)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">San Bernardino</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:73%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">73% (129/177)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">Corona</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:46%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">46% (61/133)</div>
-            </div>
+      <div class="item"><div class="item-title">No branch data</div></div>
     </div>
 
     <div class="card">
@@ -135,7 +119,7 @@
   </div>
 
   <div class="footer" id="footer">
-    Refreshed May 23 2026 06:00 AM PT
+    Refreshed May 25 2026 06:00 AM PT
   </div>
 </div>
 <script>
