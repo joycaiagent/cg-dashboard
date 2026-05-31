@@ -168,29 +168,46 @@ def get_safety():
         print(f'Safety scan error: {e}')
     return []
 
-def get_monthly_invoice_progress():
-    """Current month invoiced versus a monthly goal based on last year +15%."""
-    today = datetime.date.today()
+def get_monthly_invoice_progress(today=None, fetcher=None):
+    """Current month invoiced versus the monthly pace target from last year +15%."""
+    today = today or datetime.date.today()
+    fetcher = fetcher or aspire_api
     month_start = today.replace(day=1)
-    prev_year_start = month_start.replace(year=today.year - 1)
-    prev_year_end = (prev_year_start + datetime.timedelta(days=32)).replace(day=1) - datetime.timedelta(days=1)
+    year_start = f'{today.year - 1}-01-01'
+    year_end = f'{today.year - 1}-12-31'
 
-    current_items = aspire_api(
-        f"https://cloud-api.youraspire.com/InvoiceRevenues?$filter={urllib.parse.quote(f'InvoiceDate ge {month_start.isoformat()} and InvoiceDate le {today.isoformat()}')}&$top=1000&$skip=0"
-    )
-    prior_items = aspire_api(
-        f"https://cloud-api.youraspire.com/InvoiceRevenues?$filter={urllib.parse.quote(f'InvoiceDate ge {prev_year_start.isoformat()} and InvoiceDate le {prev_year_end.isoformat()}')}&$top=1000&$skip=0"
-    )
+    def fetch_all(filter_expr):
+        out = []
+        skip = 0
+        while True:
+            url = (
+                'https://cloud-api.youraspire.com/InvoiceRevenues?'
+                + urllib.parse.urlencode({
+                    '$filter': filter_expr,
+                    '$top': '1000',
+                    '$skip': str(skip),
+                })
+            )
+            page = fetcher(url)
+            out.extend(page)
+            if len(page) < 1000:
+                break
+            skip += 1000
+        return out
+
+    current_items = fetch_all(f'InvoiceDate ge {month_start.isoformat()} and InvoiceDate le {today.isoformat()}')
+    prior_items = fetch_all(f'InvoiceDate ge {year_start} and InvoiceDate le {year_end}')
 
     invoiced = sum((i.get('Amount', 0) or 0) for i in current_items)
-    base_goal = sum((i.get('Amount', 0) or 0) for i in prior_items)
-    goal = base_goal * 1.15
+    annual_goal = sum((i.get('Amount', 0) or 0) for i in prior_items) * 1.15
+    goal = annual_goal / 12.0
     pct = round(invoiced / goal * 100) if goal > 0 else 0
     fill = max(0, min(100, pct))
 
     return {
         'invoiced': invoiced,
         'goal': goal,
+        'annual_goal': annual_goal,
         'pct': pct,
         'fill': fill,
         'month_label': today.strftime('%B %Y'),
