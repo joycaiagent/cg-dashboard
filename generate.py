@@ -168,38 +168,45 @@ def get_safety():
         print(f'Safety scan error: {e}')
     return []
 
+def _fetch_all_invoice_revenues(fetcher, filter_expr):
+    out = []
+    skip = 0
+    while True:
+        url = (
+            'https://cloud-api.youraspire.com/InvoiceRevenues?'
+            + urllib.parse.urlencode({
+                '$filter': filter_expr,
+                '$top': '1000',
+                '$skip': str(skip),
+            })
+        )
+        page = fetcher(url)
+        out.extend(page)
+        if len(page) < 1000:
+            break
+        skip += 1000
+    return out
+
+def _annual_invoice_goal(today=None, fetcher=None):
+    today = today or datetime.date.today()
+    fetcher = fetcher or aspire_api
+    year_start = f'{today.year - 1}-01-01'
+    year_end = f'{today.year - 1}-12-31'
+    prior_items = _fetch_all_invoice_revenues(fetcher, f'InvoiceDate ge {year_start} and InvoiceDate le {year_end}')
+    prior_total = sum((i.get('Amount', 0) or 0) for i in prior_items)
+    annual_goal = prior_total * 1.15
+    return annual_goal
+
 def get_monthly_invoice_progress(today=None, fetcher=None):
     """Current month invoiced versus the monthly pace target from last year +15%."""
     today = today or datetime.date.today()
     fetcher = fetcher or aspire_api
     month_start = today.replace(day=1)
-    year_start = f'{today.year - 1}-01-01'
-    year_end = f'{today.year - 1}-12-31'
+    annual_goal = _annual_invoice_goal(today=today, fetcher=fetcher)
 
-    def fetch_all(filter_expr):
-        out = []
-        skip = 0
-        while True:
-            url = (
-                'https://cloud-api.youraspire.com/InvoiceRevenues?'
-                + urllib.parse.urlencode({
-                    '$filter': filter_expr,
-                    '$top': '1000',
-                    '$skip': str(skip),
-                })
-            )
-            page = fetcher(url)
-            out.extend(page)
-            if len(page) < 1000:
-                break
-            skip += 1000
-        return out
-
-    current_items = fetch_all(f'InvoiceDate ge {month_start.isoformat()} and InvoiceDate le {today.isoformat()}')
-    prior_items = fetch_all(f'InvoiceDate ge {year_start} and InvoiceDate le {year_end}')
+    current_items = _fetch_all_invoice_revenues(fetcher, f'InvoiceDate ge {month_start.isoformat()} and InvoiceDate le {today.isoformat()}')
 
     invoiced = sum((i.get('Amount', 0) or 0) for i in current_items)
-    annual_goal = sum((i.get('Amount', 0) or 0) for i in prior_items) * 1.15
     goal = annual_goal / 12.0
     pct = round(invoiced / goal * 100) if goal > 0 else 0
     fill = max(0, min(100, pct))
@@ -213,21 +220,51 @@ def get_monthly_invoice_progress(today=None, fetcher=None):
         'month_label': today.strftime('%B %Y'),
     }
 
-def build_month_progress_html(actual, goal, month_label='This month'):
+def get_ytd_invoice_progress(today=None, fetcher=None):
+    """Year-to-date invoiced versus the year-to-date pace target from last year +15%."""
+    today = today or datetime.date.today()
+    fetcher = fetcher or aspire_api
+    year_start = today.replace(month=1, day=1)
+    annual_goal = _annual_invoice_goal(today=today, fetcher=fetcher)
+    current_items = _fetch_all_invoice_revenues(fetcher, f'InvoiceDate ge {year_start.isoformat()} and InvoiceDate le {today.isoformat()}')
+
+    invoiced = sum((i.get('Amount', 0) or 0) for i in current_items)
+    year_days = (datetime.date(today.year, 12, 31) - year_start).days + 1
+    elapsed_days = (today - year_start).days + 1
+    goal = annual_goal * elapsed_days / year_days if year_days > 0 else annual_goal
+    pct = round(invoiced / goal * 100) if goal > 0 else 0
+    fill = max(0, min(100, pct))
+
+    return {
+        'invoiced': invoiced,
+        'goal': goal,
+        'annual_goal': annual_goal,
+        'pct': pct,
+        'fill': fill,
+        'period_label': f'YTD through {today.strftime("%b %d, %Y")}',
+    }
+
+def build_progress_html(actual, goal, period_label='This month', kicker='Monthly Invoiced vs Goal', value_label='invoiced', goal_label='goal'):
     pct = round(actual / goal * 100) if goal > 0 else 0
     fill = max(0, min(100, pct))
     return f'''
       <div class="month-progress-card">
         <div class="month-progress-header">
           <div>
-            <div class="month-progress-kicker">Monthly Invoiced vs Goal</div>
-            <div class="month-progress-title">{month_label}</div>
+            <div class="month-progress-kicker">{kicker}</div>
+            <div class="month-progress-title">{period_label}</div>
           </div>
           <div class="month-progress-pct">{pct}%</div>
         </div>
         <div class="month-progress-bar"><div class="month-progress-fill" style="width:{fill}%;"></div></div>
-        <div class="month-progress-meta">${actual:,.0f} invoiced of ${goal:,.0f} goal</div>
+        <div class="month-progress-meta">${actual:,.0f} {value_label} of ${goal:,.0f} {goal_label}</div>
       </div>'''
+
+def build_month_progress_html(actual, goal, month_label='This month'):
+    return build_progress_html(actual, goal, month_label, kicker='Monthly Invoiced vs Goal', value_label='invoiced', goal_label='goal')
+
+def build_ytd_progress_html(actual, goal, period_label='YTD'):
+    return build_progress_html(actual, goal, period_label, kicker='YTD Invoiced vs Goal', value_label='invoiced', goal_label='YTD goal')
 
 # ── escape ────────────────────────────────────────────────────────────────────
 
@@ -269,6 +306,12 @@ def build_html(events, stats, safety_incidents):
         month_progress['invoiced'],
         month_progress['goal'],
         month_progress['month_label']
+    )
+    ytd_progress = get_ytd_invoice_progress()
+    ytd_progress_html = build_ytd_progress_html(
+        ytd_progress['invoiced'],
+        ytd_progress['goal'],
+        ytd_progress['period_label']
     )
     branch_rows = ''
     for branch, d in sorted(h['by_branch'].items(), key=lambda x: -x[1]['total']):
@@ -423,6 +466,11 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
     <div class="card">
       <h2><span class="emoji">💵</span> Monthly Invoiced vs Goal</h2>
       {month_progress_html}
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">📈</span> YTD Invoiced vs Goal</h2>
+      {ytd_progress_html}
     </div>
 
     <div class="card">
