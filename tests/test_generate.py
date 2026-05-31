@@ -1,3 +1,4 @@
+import json
 import generate
 
 
@@ -95,3 +96,57 @@ def test_get_ops_health_reads_all_weekly_tickets_with_pagination():
     assert result['open'] == 1
     assert result['rate'] == 100
     assert len([c for c in calls if 'WorkTickets' in c]) == 2
+
+
+def test_get_safety_returns_summary_and_manager_from_scanner_output():
+    payload = [{
+        'subject': 'FW: Margarito Martinez Sprained Ankle 5/20/26',
+        'from': 'josecontreras@cglandscape.net',
+        'date': '2026-05-20',
+        'description': 'Employee: Margarito Martinez sprained his ankle while working.',
+        'emailType': 'original',
+        'manager': 'Antonio Taylor',
+        'summary': 'Employee: Margarito Martinez sprained his ankle while working.'
+    }]
+
+    class FakeRunResult:
+        def __init__(self, stdout):
+            self.stdout = stdout
+
+    original_run = generate.subprocess.run
+    generate.subprocess.run = lambda *args, **kwargs: FakeRunResult(json.dumps(payload))
+    try:
+        items = generate.get_safety()
+    finally:
+        generate.subprocess.run = original_run
+
+    assert len(items) == 1
+    assert items[0]['manager'] == 'Antonio Taylor'
+    assert 'sprained his ankle' in items[0]['summary']
+    assert items[0]['emailType'] == 'original'
+
+
+def test_build_html_shows_safety_summary_and_manager():
+    html = generate.build_html(
+        events=[],
+        stats={
+            'health': 'yellow', 'health_label': 'Watch',
+            'complete': 1, 'canceled': 0, 'open': 0, 'scheduled': 1,
+            'total': 1, 'rate': 100, 'sched_revenue': 0, 'total_revenue': 0,
+            'complaints': [], 'by_branch': {}, 'week_start': '2026-05-25', 'week_end': '2026-05-31'
+        },
+        safety_incidents=[{
+            'id': 's1',
+            'subject': 'FW: Margarito Martinez Sprained Ankle 5/20/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-20',
+            'description': 'Employee: Margarito Martinez sprained his ankle while working.',
+            'summary': 'Employee: Margarito Martinez sprained his ankle while working.',
+            'manager': 'Antonio Taylor',
+            'emailType': 'original',
+        }],
+    )
+
+    assert 'Employee: Margarito Martinez sprained his ankle while working.' in html
+    assert '👔 Manager: Antonio Taylor' in html
+    assert '📩 Original' in html

@@ -135,9 +135,20 @@ def get_ops_health():
     }
 
 def get_safety():
-    """Return unreviewed safety items from state/safety-queue.json.
-    Falls back to running the scanner if the queue is missing.
+    """Return unreviewed safety items.
+    Prefer the scanner output because it includes the original incident summary,
+    email type, and manager. Fall back to the local queue if scanning fails.
     """
+    try:
+        result = subprocess.run(
+            ['node', str(Path.home() / '.openclaw/workspace/scripts/scan-safety-emails.js')],
+            capture_output=True, text=True, timeout=30
+        )
+        if result.stdout.strip():
+            return json.loads(result.stdout.strip())
+    except Exception as e:
+        print(f'Safety scan error: {e}')
+
     queue_path = Path.home() / '.openclaw' / 'workspace' / 'state' / 'safety-queue.json'
     try:
         if queue_path.exists():
@@ -160,21 +171,13 @@ def get_safety():
                         'from': it.get('from'),
                         'date': it.get('received'),
                         'description': it.get('description'),
-                        'manager': ''
+                        'manager': it.get('manager') or '',
+                        'emailType': it.get('emailType') or '',
+                        'summary': it.get('summary') or it.get('description') or ''
                     })
             return out
     except Exception as e:
         print(f'Failed to read safety queue: {e}')
-    # fallback: run the scanner
-    try:
-        result = subprocess.run(
-            ['node', str(Path.home() / '.openclaw/workspace/scripts/scan-safety-emails.js')],
-            capture_output=True, text=True, timeout=30
-        )
-        if result.stdout.strip():
-            return json.loads(result.stdout.strip())
-    except Exception as e:
-        print(f'Safety scan error: {e}')
     return []
 
 def _fetch_all_invoice_revenues(fetcher, filter_expr):
@@ -344,15 +347,18 @@ def build_html(events, stats, safety_incidents):
             date = inc.get('date','')
             manager = esc(inc.get('manager') or '')
             email_type = inc.get('emailType','')
+            summary = esc(inc.get('summary') or '')
             body_plain = esc((inc.get('description') or '').replace('\n', '<br>'))
             type_badge = '🔄 Forwarded' if email_type == 'forwarded' else ('↩️ Reply' if email_type == 'reply' else '📩 Original')
             manager_line = f'<div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: {manager}</div>' if manager else ''
+            summary_line = f'<div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> {summary}</div>' if summary else ''
             safety_rows += f'''
         <div class="item urgent" data-id="{sid}">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ {subj} <span class="chevron">▸</span></div>
             <div class="item-meta">{type_badge} · {frm} · {date}</div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 {manager_line}
+                {summary_line}
                 <div style="margin-bottom:10px;">{body_plain or 'No additional details available.'}</div>
                 <button class="review-btn" onclick="reviewIncident(this,'{sid}')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
             </div>
