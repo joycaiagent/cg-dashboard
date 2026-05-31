@@ -353,7 +353,7 @@ def build_html(events, stats, safety_incidents):
             manager_line = f'<div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: {manager}</div>' if manager else ''
             summary_line = f'<div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> {summary}</div>' if summary else ''
             safety_rows += f'''
-        <div class="item urgent" data-id="{sid}">
+        <div class="item urgent" data-id="{sid}" data-subject="{subj}" data-from="{frm}" data-date="{date}" data-summary="{summary}" data-manager="{manager}" data-email-type="{esc(email_type)}" data-description="{body_plain}" data-link="{esc(inc.get('link',''))}">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ {subj} <span class="chevron">▸</span></div>
             <div class="item-meta">{type_badge} · {frm} · {date}</div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
@@ -533,39 +533,73 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
   function reviewIncident(btn, id) {{
     btn.textContent = '⏳ Saving...';
     btn.disabled = true;
-    // Save to localStorage
+    var item = btn.closest('.item');
+    var payload = {{id: id}};
+    if (item) {{
+      payload.subject = item.dataset.subject || '';
+      payload.from = item.dataset.from || '';
+      payload.date = item.dataset.date || '';
+      payload.summary = item.dataset.summary || '';
+      payload.description = item.dataset.description || '';
+      payload.manager = item.dataset.manager || '';
+      payload.emailType = item.dataset.emailType || '';
+      payload.link = item.dataset.link || '';
+    }}
+    // Save to localStorage so the static GitHub Pages copy also remembers it
     try {{
       var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
       if (!reviewed.includes(id)) reviewed.push(id);
       localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
     }} catch(e) {{}}
-    // Try POST to backend (localhost:8000), fall back to localStorage only
+    // Try POST to backend tracker (localhost:8000); fall back to localStorage only
     fetch('/api/incident/review', {{
       method: 'POST',
-      headers: {{'Content-Type': 'application/x-www-form-urlencoded'}},
-      body: 'id=' + encodeURIComponent(id)
-    }}).then(function(res) {{ return res.json(); }})
-      .then(function(data) {{
-        if (data.success) {{
-          var item = btn.closest('.item');
-          if (item) item.remove();
-        }}
-      }}).catch(function() {{
-        // Backend not available — localStorage saved; remove item now
-        var item = btn.closest('.item');
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify(payload)
+    }}).then(function(res) {{
+      if (!res.ok) throw new Error('backend review save failed');
+      return res.json();
+    }}).then(function(data) {{
+      if (data && data.success) {{
         if (item) item.remove();
-      }});
+        return;
+      }}
+      throw new Error('backend review save failed');
+    }}).catch(function() {{
+      // Backend not available — localStorage saved; remove item now
+      if (item) item.remove();
+    }});
   }}
 
-  // On load: hide any previously reviewed incidents (localStorage)
+  // On load: hide any previously reviewed incidents (backend first, then localStorage)
   (function() {{
-    try {{
-      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
-      reviewed.forEach(function(id) {{
+    function hideReviewed(ids) {{
+      ids.forEach(function(id) {{
         var el = document.querySelector('[data-id="' + id + '"]');
         if (el) el.remove();
       }});
+    }}
+    function mergeReviewed(ids) {{
+      try {{
+        var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+        ids.forEach(function(id) {{ if (!reviewed.includes(id)) reviewed.push(id); }});
+        localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
+      }} catch(e) {{}}
+    }}
+    try {{
+      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+      hideReviewed(reviewed);
     }} catch(e) {{}}
+    fetch('/api/incident/reviews')
+      .then(function(res) {{ if (!res.ok) throw new Error('tracker unavailable'); return res.json(); }})
+      .then(function(data) {{
+        var ids = (data && data.success && Array.isArray(data.items)) ? data.items.map(function(it) {{ return it.id; }}).filter(Boolean) : [];
+        if (ids.length) {{
+          hideReviewed(ids);
+          mergeReviewed(ids);
+        }}
+      }})
+      .catch(function() {{}});
   }})();
 
   // Follow-up checkbox wiring

@@ -144,9 +144,12 @@ def test_build_html_shows_safety_summary_and_manager():
             'summary': 'Employee: Margarito Martinez sprained his ankle while working.',
             'manager': 'Antonio Taylor',
             'emailType': 'original',
+            'link': 'https://example.com/item'
         }],
     )
 
     assert 'Employee: Margarito Martinez sprained his ankle while working.' in html
     assert '👔 Manager: Antonio Taylor' in html
     assert '📩 Original' in html
+    assert 'data-manager="Antonio Taylor"' in html
+    assert '/api/incident/reviews' in html
