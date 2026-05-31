@@ -260,41 +260,54 @@ def build_html(events, stats, safety_incidents):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CG Landscape — Daily Ops</title>
 <style>
-  *{{box-sizing:border-box;margin:0;padding:0}}
-  body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-       background:#0a1929;color:#e0e6ed;min-height:100vh;padding:20px}}
-  .container{{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}}
-  header{{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #1e3a5f;margin-bottom:30px}}
-  h1{{color:#00d4aa;font-size:1.8rem;margin:0}} .subtitle{{color:#7a8c9e;margin-top:4px}}
-  .refresh-btn{{background:#00d4aa;color:#0a1929;border:none;padding:10px 20px;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;white-space:nowrap}}
-  .refresh-btn:hover{{background:#00eebb}}
-  .refresh-btn.loading{{opacity:0.6;pointer-events:none}}
-  .grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}}
-  .card{{background:#112240;border-radius:12px;padding:20px;border:1px solid #1e3a5f}}
-  .card h2{{color:#00d4aa;font-size:1rem;margin-bottom:15px;display:flex;align-items:center;gap:8px}}
-  .card h2 .emoji{{font-size:1.2rem}}
-  .item{{padding:12px 0;border-bottom:1px solid #1e3a5f}}
-  .item:last-child{{border-bottom:none}}
-  .item-title{{font-weight:500;display:flex;align-items:center;gap:6px}}
-  .item-meta{{color:#7a8c9e;font-size:0.8rem;margin-top:4px}}
-  .chevron{{margin-left:auto;color:#7a8c9e;font-size:0.8rem}}
-  .health-card{{border-radius:10px;padding:16px;text-align:center;
-               border:1px solid {hcl};background:{hbg};margin-bottom:16px}}
-  .health-status{{font-size:1.2rem;font-weight:700;color:{hcl}}}
-  .health-rate{{font-size:1.5rem;font-weight:700;color:{hcl};margin:6px 0}}
-  .health-meta{{color:#7a8c9e;font-size:0.8rem}}
-  .stats-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}
-  .stat-item{{background:#0a1929;border-radius:8px;padding:12px;text-align:center}}
-  .stat-value{{font-size:1.4rem;font-weight:700;color:#00d4aa}}
-  .stat-label{{color:#7a8c9e;font-size:0.75rem}}
-  .stat-revenue{{margin-top:10px;color:#e0e6ed;font-size:0.9rem;text-align:center}}
-  .branch-row{{display:flex;align-items:center;gap:10px;padding:6px 0}}
-  .branch-name{{min-width:90px;font-size:0.85rem;color:#e0e6ed}}
-  .branch-bar-wrap{{flex:1;height:8px;background:#1e3a5f;border-radius:4px;overflow:hidden}}
-  .branch-bar{{height:100%;border-radius:4px}}
-  .branch-pct{{min-width:55px;text-align:right;font-size:0.8rem;color:#7a8c9e}}
-  .footer{{text-align:center;padding:20px;color:#7a8c9e;font-size:0.8rem;margin-top:30px}}
-  @media(max-width:600px){{.stats-grid{{grid-template-columns:repeat(2,1fr)}}}}
+*{{box-sizing:border-box;margin:0;padding:0}}
+:root{{
+  --bg0:#07111d;
+  --bg1:#0b1727;
+  --panel:rgba(17,34,64,.78);
+  --panel-strong:#112240;
+  --line:rgba(99,146,191,.18);
+  --text:#e7eef8;
+  --muted:#8ea3b8;
+  --accent:#2ee6a6;
+  --accent-soft:rgba(46,230,166,.15);
+  --shadow:0 18px 50px rgba(1,8,18,.35);
+}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+     background:radial-gradient(circle at top, #112744 0, var(--bg0) 38%, var(--bg1) 100%);
+     color:var(--text);min-height:100vh;padding:24px;line-height:1.45;-webkit-font-smoothing:antialiased}}
+.container{{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}}
+header{{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 0 22px;border-bottom:1px solid var(--line);margin-bottom:24px}}
+h1{{color:var(--text);font-size:2rem;letter-spacing:-.02em;margin:0}}
+.subtitle{{color:var(--muted);margin-top:6px;font-size:.95rem}}
+.refresh-btn{{background:linear-gradient(135deg,#2ee6a6,#00c8ff);color:#07111d;border:none;padding:12px 18px;border-radius:999px;font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;box-shadow:0 10px 24px rgba(0,200,255,.18)}}
+.refresh-btn:hover{{filter:brightness(1.05);transform:translateY(-1px)}}
+.refresh-btn.loading{{opacity:0.6;pointer-events:none;transform:none}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}}
+.card{{background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:20px;padding:20px;border:1px solid var(--line);box-shadow:var(--shadow)}}
+.card h2{{color:var(--text);font-size:1rem;margin-bottom:16px;display:flex;align-items:center;gap:10px;letter-spacing:.01em}}
+.card h2 .emoji{{font-size:1.15rem}}
+.item{{padding:14px 0;border-bottom:1px solid var(--line)}}
+.item:last-child{{border-bottom:none}}
+.item-title{{font-weight:600;display:flex;align-items:center;gap:8px}}
+.item-meta{{color:var(--muted);font-size:.82rem;margin-top:6px}}
+.chevron{{margin-left:auto;color:var(--muted);font-size:.8rem}}
+.health-card{{border-radius:16px;padding:18px;text-align:center;border:1px solid {hcl};background:{hbg};margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}}
+.health-status{{font-size:1rem;font-weight:800;color:{hcl};text-transform:uppercase;letter-spacing:.08em}}
+.health-rate{{font-size:2rem;font-weight:800;color:{hcl};margin:8px 0 6px}}
+.health-meta{{color:var(--muted);font-size:.82rem}}
+.stats-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}
+.stat-item{{background:#0b1727;border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,.04)}}
+.stat-value{{font-size:1.5rem;font-weight:800;color:var(--accent);line-height:1}}
+.stat-label{{color:var(--muted);font-size:.75rem;margin-top:6px;letter-spacing:.02em;text-transform:uppercase}}
+.stat-revenue{{margin-top:12px;color:var(--text);font-size:.95rem;text-align:center}}
+.branch-row{{display:flex;align-items:center;gap:10px;padding:7px 0}}
+.branch-name{{min-width:96px;font-size:.84rem;color:var(--text)}}
+.branch-bar-wrap{{flex:1;height:9px;background:#15243c;border-radius:999px;overflow:hidden}}
+.branch-bar{{height:100%;border-radius:999px}}
+.branch-pct{{min-width:64px;text-align:right;font-size:.8rem;color:var(--muted)}}
+.footer{{text-align:center;padding:20px;color:var(--muted);font-size:.8rem;margin-top:30px}}
+@media(max-width:600px){{body{{padding:14px}} header{{padding:10px 0 18px}} h1{{font-size:1.6rem}} .grid{{grid-template-columns:1fr}} .stats-grid{{grid-template-columns:repeat(2,1fr)}} .card{{padding:16px}}}}
 </style>
 </head>
 <body>
