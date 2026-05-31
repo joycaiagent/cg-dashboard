@@ -278,9 +278,10 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
      color:var(--text);min-height:100vh;padding:24px;line-height:1.45;-webkit-font-smoothing:antialiased}}
 .container{{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}}
 header{{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 0 22px;border-bottom:1px solid var(--line);margin-bottom:24px}}
-h1{{color:var(--text);font-size:2rem;letter-spacing:-.02em;margin:0}}
-.subtitle{{color:var(--muted);margin-top:6px;font-size:.95rem}}
-.refresh-btn{{background:linear-gradient(135deg,#2ee6a6,#00c8ff);color:#07111d;border:none;padding:12px 18px;border-radius:999px;font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;box-shadow:0 10px 24px rgba(0,200,255,.18)}}
+h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;letter-spacing:-.02em;margin:0}}
+  .brand-logo{{width:54px;height:54px;flex:0 0 54px;object-fit:contain;border-radius:14px;background:rgba(255,255,255,.06);padding:4px;box-shadow:0 10px 24px rgba(0,0,0,.18)}}
+  .subtitle{{color:var(--muted);margin-top:6px;font-size:.95rem}}
+
 .refresh-btn:hover{{filter:brightness(1.05);transform:translateY(-1px)}}
 .refresh-btn.loading{{opacity:0.6;pointer-events:none;transform:none}}
 .grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}}
@@ -314,7 +315,7 @@ h1{{color:var(--text);font-size:2rem;letter-spacing:-.02em;margin:0}}
 <div class="container">
   <header>
     <div>
-      <h1>🌿 CG Landscape — Daily Ops</h1>
+      <h1><img class="brand-logo" src="cg-logo.png" alt="CG Landscape logo"> CG Landscape — Daily Ops</h1>
       <div class="subtitle">{today}</div>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
