@@ -143,6 +143,7 @@ def test_build_html_shows_safety_summary_and_manager():
             'description': 'Employee: Margarito Martinez sprained his ankle while working.',
             'summary': 'Employee: Margarito Martinez sprained his ankle while working.',
             'manager': 'Antonio Taylor',
+            'team_member': 'Margarito Martinez',
             'emailType': 'original',
             'link': 'https://example.com/item'
         }],
@@ -150,6 +151,7 @@ def test_build_html_shows_safety_summary_and_manager():
 
     assert 'Employee: Margarito Martinez sprained his ankle while working.' in html
     assert '👔 Manager: Antonio Taylor' in html
+    assert '👷 Team member: Margarito Martinez' in html
     assert '📩 Original' in html
     assert 'data-manager="Antonio Taylor"' in html
     assert '🩼 Modified Duty' in html
@@ -184,3 +186,125 @@ def test_get_safety_auto_detects_modified_duty_from_scanner_text():
     assert 'modified duty' in items[0]['summary'].lower()
     assert items[0]['modified_duty']
     assert items[0]['manager'] == 'Juan Carlos Garcia'
+
+
+def test_get_safety_dedupes_against_roster_and_active_history(tmp_path):
+    roster = tmp_path / 'team-roster.md'
+    roster.write_text(
+        '# Team\n\n'
+        '|| Name | Email ||\n'
+        '|| Margarito Martinez | margaritomartinez@cglandscape.net ||\n'
+        '|| Juan Carlos Garcia | juancgarcia@cglandscape.net ||\n'
+    )
+    history = tmp_path / 'reviewed-safety.json'
+    history.write_text(json.dumps([
+        {
+            'id': 'inc-old',
+            'status': 'open',
+            'subject': 'Margarito Martinez Sprained Ankle',
+            'summary': 'Employee Margarito Martinez is on modified duty.',
+            'manager': 'Juan Carlos Garcia'
+        }
+    ]))
+    payload = [
+        {
+            'subject': 'FW: Margarito Martinez Sprained Ankle 5/20/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-20',
+            'description': 'Employee Margarito Martinez is on modified duty. No walking more than 15 minutes.',
+            'emailType': 'forwarded',
+            'manager': 'Juan Carlos Garcia',
+            'summary': 'Employee Margarito Martinez is on modified duty. No walking more than 15 minutes.'
+        },
+        {
+            'subject': 'FW: Margarito Martinez Follow Up 5/21/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-21',
+            'description': 'Margarito Martinez is still restricted from lifting more than 10 pounds.',
+            'emailType': 'forwarded',
+            'manager': 'Juan Carlos Garcia',
+            'summary': 'Margarito Martinez is still restricted from lifting more than 10 pounds.'
+        },
+        {
+            'subject': 'FW: Juan Carlos Garcia Sprained Wrist 5/20/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-20',
+            'description': 'Juan Carlos Garcia sprained his wrist on site.',
+            'emailType': 'forwarded',
+            'manager': 'Antonio Taylor',
+            'summary': 'Juan Carlos Garcia sprained his wrist on site.'
+        }
+    ]
+
+    class FakeRunResult:
+        def __init__(self, stdout):
+            self.stdout = stdout
+
+    original_run = generate.subprocess.run
+    generate.subprocess.run = lambda *args, **kwargs: FakeRunResult(json.dumps(payload))
+    try:
+        items = generate.get_safety(team_roster_path=roster, review_history_path=history)
+    finally:
+        generate.subprocess.run = original_run
+
+    assert len(items) == 1
+    assert items[0]['subject'] == 'FW: Juan Carlos Garcia Sprained Wrist 5/20/26'
+    assert items[0]['manager'] == 'Antonio Taylor'
+
+
+def test_get_safety_dedupes_repeat_team_member_in_same_scan(tmp_path):
+    roster = tmp_path / 'team-roster.md'
+    roster.write_text(
+        '# Team\n\n'
+        '|| Name | Email ||\n'
+        '|| Margarito Martinez | margaritomartinez@cglandscape.net ||\n'
+        '|| Juan Carlos Garcia | juancgarcia@cglandscape.net ||\n'
+    )
+    history = tmp_path / 'reviewed-safety.json'
+    history.write_text('[]')
+    payload = [
+        {
+            'subject': 'FW: Margarito Martinez Sprained Ankle 5/20/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-20',
+            'description': 'Employee Margarito Martinez is on modified duty. No walking more than 15 minutes.',
+            'emailType': 'forwarded',
+            'manager': 'Juan Carlos Garcia',
+            'summary': 'Employee Margarito Martinez is on modified duty. No walking more than 15 minutes.'
+        },
+        {
+            'subject': 'FW: Margarito Martinez Follow Up 5/21/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-21',
+            'description': 'Margarito Martinez is still restricted from lifting more than 10 pounds.',
+            'emailType': 'forwarded',
+            'manager': 'Juan Carlos Garcia',
+            'summary': 'Margarito Martinez is still restricted from lifting more than 10 pounds.'
+        },
+        {
+            'subject': 'FW: Juan Carlos Garcia Sprained Wrist 5/20/26',
+            'from': 'josecontreras@cglandscape.net',
+            'date': '2026-05-20',
+            'description': 'Juan Carlos Garcia sprained his wrist on site.',
+            'emailType': 'forwarded',
+            'manager': 'Antonio Taylor',
+            'summary': 'Juan Carlos Garcia sprained his wrist on site.'
+        }
+    ]
+
+    class FakeRunResult:
+        def __init__(self, stdout):
+            self.stdout = stdout
+
+    original_run = generate.subprocess.run
+    generate.subprocess.run = lambda *args, **kwargs: FakeRunResult(json.dumps(payload))
+    try:
+        items = generate.get_safety(team_roster_path=roster, review_history_path=history)
+    finally:
+        generate.subprocess.run = original_run
+
+    assert len(items) == 2
+    assert [item['subject'] for item in items] == [
+        'FW: Margarito Martinez Sprained Ankle 5/20/26',
+        'FW: Juan Carlos Garcia Sprained Wrist 5/20/26',
+    ]

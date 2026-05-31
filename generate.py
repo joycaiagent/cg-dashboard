@@ -3,7 +3,7 @@
 Generate static CG Landscape ops dashboard HTML.
 Run daily via cron to refresh the static page.
 """
-import json, os, sys, datetime, urllib.parse, subprocess
+import json, os, sys, datetime, urllib.parse, subprocess, re
 from pathlib import Path
 
 DASHBOARD_DIR = Path(__file__).parent
@@ -160,10 +160,127 @@ def _annotate_safety_items(items):
     return out
 
 
-def get_safety():
+def _normalize_safety_text(value):
+    return ' '.join(re.sub(r'[^a-z0-9]+', ' ', str(value or '').lower()).split())
+
+
+def _safety_blob(item):
+    return ' '.join(str(item.get(k) or '') for k in ('subject', 'description', 'summary', 'manager', 'from', 'fromEmail'))
+
+
+def _load_team_roster(roster_path=None):
+    roster_path = Path(roster_path) if roster_path else Path.home() / '.openclaw' / 'workspace' / 'state' / 'trackers' / 'team-roster.md'
+    try:
+        text = roster_path.read_text()
+    except Exception:
+        return []
+    members = []
+    for line in text.splitlines():
+        m = re.match(r'^\|\|\s*(.*?)\s*\|\s*([^|]+?)\s*\|\|\s*$', line)
+        if not m:
+            continue
+        name = m.group(1).strip()
+        email = m.group(2).strip().lower()
+        if not name or not email or '@' not in email:
+            continue
+        if name.lower() == 'name' and email.lower() == 'email':
+            continue
+        members.append({
+            'name': name,
+            'email': email,
+            'name_key': _normalize_safety_text(name),
+        })
+    return members
+
+
+def _load_safety_history(history_path=None):
+    history_path = Path(history_path) if history_path else DASHBOARD_DIR.parent / 'state' / 'trackers' / 'reviewed-safety.json'
+    try:
+        data = json.loads(history_path.read_text())
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
+
+
+def _match_team_member(item, roster):
+    text_raw = _safety_blob(item).lower()
+    text_norm = _normalize_safety_text(text_raw)
+    best = None
+    for member in roster or []:
+        if member['email'] and member['email'] in text_raw:
+            return member
+        if member['name_key'] and member['name_key'] in text_norm:
+            if not best or len(member['name_key']) > len(best['name_key']):
+                best = member
+    return best
+
+
+def _safety_fingerprint(item):
+    text = _normalize_safety_text(_safety_blob(item))
+    text = re.sub(r'^(fw|fwd|re)\s+', '', text)
+    return text
+
+
+def _dedupe_safety_items(items, team_roster_path=None, review_history_path=None):
+    roster = _load_team_roster(team_roster_path)
+    history = _load_safety_history(review_history_path)
+    active_statuses = {'open', 'modified_duty'}
+    active_member_keys = set()
+    history_member_fingerprints = set()
+    history_fingerprints = set()
+
+    for entry in history or []:
+        if not isinstance(entry, dict):
+            continue
+        fingerprint = _safety_fingerprint(entry)
+        if fingerprint:
+            history_fingerprints.add(fingerprint)
+        member = _match_team_member(entry, roster)
+        member_key = member['name_key'] if member else ''
+        if member_key and fingerprint:
+            history_member_fingerprints.add((member_key, fingerprint))
+        if member_key and str(entry.get('status') or '').lower() in active_statuses:
+            active_member_keys.add(member_key)
+
+    out = []
+    seen_member_keys = set()
+    seen_fingerprints = set()
+
+    for item in items or []:
+        if not isinstance(item, dict):
+            continue
+        member = _match_team_member(item, roster)
+        member_key = member['name_key'] if member else ''
+        member_name = member['name'] if member else ''
+        fingerprint = _safety_fingerprint(item)
+
+        if member_key:
+            item = {**item, 'team_member': member_name}
+            if member_key in active_member_keys:
+                continue
+            if member_key in seen_member_keys:
+                continue
+            if fingerprint and (member_key, fingerprint) in history_member_fingerprints:
+                continue
+        if fingerprint and fingerprint in history_fingerprints:
+            continue
+        if fingerprint and fingerprint in seen_fingerprints:
+            continue
+
+        if member_key:
+            seen_member_keys.add(member_key)
+        if fingerprint:
+            seen_fingerprints.add(fingerprint)
+        out.append(_infer_safety_status(item))
+    return out
+
+
+def get_safety(team_roster_path=None, review_history_path=None):
     """Return unreviewed safety items.
     Prefer the scanner output because it includes the original incident summary,
     email type, and manager. Fall back to the local queue if scanning fails.
+    Dedupe against the team roster and the review history so the same person
+    doesn't produce repeated cards.
     """
     try:
         result = subprocess.run(
@@ -171,7 +288,11 @@ def get_safety():
             capture_output=True, text=True, timeout=30
         )
         if result.stdout.strip():
-            return _annotate_safety_items(json.loads(result.stdout.strip()))
+            return _dedupe_safety_items(
+                _annotate_safety_items(json.loads(result.stdout.strip())),
+                team_roster_path=team_roster_path,
+                review_history_path=review_history_path,
+            )
     except Exception as e:
         print(f'Safety scan error: {e}')
 
@@ -201,7 +322,11 @@ def get_safety():
                         'emailType': it.get('emailType') or '',
                         'summary': it.get('summary') or it.get('description') or ''
                     }))
-            return out
+            return _dedupe_safety_items(
+                out,
+                team_roster_path=team_roster_path,
+                review_history_path=review_history_path,
+            )
     except Exception as e:
         print(f'Failed to read safety queue: {e}')
     return []
@@ -377,6 +502,8 @@ def build_html(events, stats, safety_incidents):
             body_plain = esc((inc.get('description') or '').replace('\n', '<br>'))
             type_badge = '🔄 Forwarded' if email_type == 'forwarded' else ('↩️ Reply' if email_type == 'reply' else '📩 Original')
             manager_line = f'<div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: {manager}</div>' if manager else ''
+            team_member = esc(inc.get('team_member') or '')
+            team_member_line = f'<div style="margin-bottom:6px;font-size:0.8rem;color:#9be7ff;">👷 Team member: {team_member}</div>' if team_member else ''
             summary_line = f'<div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> {summary}</div>' if summary else ''
             safety_status = (inc.get('status') or '').lower()
             badge_style = 'inline-flex' if safety_status == 'modified_duty' else 'none'
@@ -386,6 +513,7 @@ def build_html(events, stats, safety_incidents):
             <div class="item-meta">{type_badge} · {frm} · {date} <span class="safety-state-badge" style="display:{badge_style};margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 {manager_line}
+                {team_member_line}
                 {summary_line}
                 <div style="margin-bottom:10px;">{body_plain or 'No additional details available.'}</div>
                 <div style="display:flex;flex-wrap:wrap;gap:8px;">
