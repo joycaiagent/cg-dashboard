@@ -57,3 +57,41 @@ def test_get_ytd_invoice_progress_uses_prorated_annual_goal():
     assert round(result['goal']) == 945205
     assert result['pct'] == 127
     assert len(calls) == 2
+
+
+def test_get_ops_health_reads_all_weekly_tickets_with_pagination():
+    calls = []
+
+    class FakeDate(generate.datetime.date):
+        @classmethod
+        def today(cls):
+            return cls(2026, 5, 27)
+
+    def make_ticket(status, branch='Anaheim', revenue=100):
+        return {'WorkTicketStatusName': status, 'BranchName': branch, 'Revenue': revenue}
+
+    def fake_fetcher(url):
+        calls.append(url)
+        if 'ClientComplaints' in url:
+            return []
+        if '$skip=0' in url:
+            return [make_ticket('Complete')] * 1000
+        if '$skip=1000' in url:
+            return [make_ticket('Open')]
+        raise AssertionError(f'unexpected url: {url}')
+
+    original_date = generate.datetime.date
+    original_aspire_api = generate.aspire_api
+    generate.datetime.date = FakeDate
+    generate.aspire_api = fake_fetcher
+    try:
+        result = generate.get_ops_health()
+    finally:
+        generate.datetime.date = original_date
+        generate.aspire_api = original_aspire_api
+
+    assert result['total'] == 1001
+    assert result['complete'] == 1000
+    assert result['open'] == 1
+    assert result['rate'] == 100
+    assert len([c for c in calls if 'WorkTickets' in c]) == 2

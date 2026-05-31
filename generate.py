@@ -88,8 +88,17 @@ def get_ops_health():
     sunday  = monday + datetime.timedelta(days=6)  # full week Mon→Sun
     start, end = monday.isoformat(), sunday.isoformat()
     flt = f"ScheduledStartDate ge {start} and ScheduledStartDate le {end}"
-    url = f"https://cloud-api.youraspire.com/WorkTickets?$filter={urllib.parse.quote(flt)}&$top=1000&$skip=0"
-    tickets = aspire_api(url)
+
+    tickets = []
+    skip = 0
+    while True:
+        url = f"https://cloud-api.youraspire.com/WorkTickets?$filter={urllib.parse.quote(flt)}&$top=1000&$skip={skip}"
+        page = aspire_api(url)
+        tickets.extend(page)
+        if len(page) < 1000:
+            break
+        skip += 1000
+
     sched   = [w for w in tickets if w.get('WorkTicketStatusName') == 'Scheduled']
     done    = [w for w in tickets if w.get('WorkTicketStatusName') == 'Complete']
     canc    = [w for w in tickets if w.get('WorkTicketStatusName') == 'Canceled']
