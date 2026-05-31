@@ -168,6 +168,50 @@ def get_safety():
         print(f'Safety scan error: {e}')
     return []
 
+def get_monthly_invoice_progress():
+    """Current month invoiced versus a monthly goal based on last year +15%."""
+    today = datetime.date.today()
+    month_start = today.replace(day=1)
+    prev_year_start = month_start.replace(year=today.year - 1)
+    prev_year_end = (prev_year_start + datetime.timedelta(days=32)).replace(day=1) - datetime.timedelta(days=1)
+
+    current_items = aspire_api(
+        f"https://cloud-api.youraspire.com/InvoiceRevenues?$filter={urllib.parse.quote(f'InvoiceDate ge {month_start.isoformat()} and InvoiceDate le {today.isoformat()}')}&$top=1000&$skip=0"
+    )
+    prior_items = aspire_api(
+        f"https://cloud-api.youraspire.com/InvoiceRevenues?$filter={urllib.parse.quote(f'InvoiceDate ge {prev_year_start.isoformat()} and InvoiceDate le {prev_year_end.isoformat()}')}&$top=1000&$skip=0"
+    )
+
+    invoiced = sum((i.get('Amount', 0) or 0) for i in current_items)
+    base_goal = sum((i.get('Amount', 0) or 0) for i in prior_items)
+    goal = base_goal * 1.15
+    pct = round(invoiced / goal * 100) if goal > 0 else 0
+    fill = max(0, min(100, pct))
+
+    return {
+        'invoiced': invoiced,
+        'goal': goal,
+        'pct': pct,
+        'fill': fill,
+        'month_label': today.strftime('%B %Y'),
+    }
+
+def build_month_progress_html(actual, goal, month_label='This month'):
+    pct = round(actual / goal * 100) if goal > 0 else 0
+    fill = max(0, min(100, pct))
+    return f'''
+      <div class="month-progress-card">
+        <div class="month-progress-header">
+          <div>
+            <div class="month-progress-kicker">Monthly Invoiced vs Goal</div>
+            <div class="month-progress-title">{month_label}</div>
+          </div>
+          <div class="month-progress-pct">{pct}%</div>
+        </div>
+        <div class="month-progress-bar"><div class="month-progress-fill" style="width:{fill}%;"></div></div>
+        <div class="month-progress-meta">${actual:,.0f} invoiced of ${goal:,.0f} goal</div>
+      </div>'''
+
 # ── escape ────────────────────────────────────────────────────────────────────
 
 def esc(s):
@@ -203,6 +247,12 @@ def build_html(events, stats, safety_incidents):
     h   = stats
     hcl = '#00d4aa' if h['health']=='green' else '#f59e0b' if h['health']=='yellow' else '#ef4444'
     hbg = '#00d4aa18' if h['health']=='green' else '#f59e0b18' if h['health']=='yellow' else '#ef444418'
+    month_progress = get_monthly_invoice_progress()
+    month_progress_html = build_month_progress_html(
+        month_progress['invoiced'],
+        month_progress['goal'],
+        month_progress['month_label']
+    )
     branch_rows = ''
     for branch, d in sorted(h['by_branch'].items(), key=lambda x: -x[1]['total']):
         pct = round(d['complete']/d['total']*100) if d['total']>0 else 0
@@ -297,6 +347,14 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
 .health-status{{font-size:1rem;font-weight:800;color:{hcl};text-transform:uppercase;letter-spacing:.08em}}
 .health-rate{{font-size:2rem;font-weight:800;color:{hcl};margin:8px 0 6px}}
 .health-meta{{color:var(--muted);font-size:.82rem}}
+.month-progress-card{{border-radius:16px;padding:18px;border:1px solid rgba(99,146,191,.22);background:linear-gradient(180deg,rgba(10,23,39,.95),rgba(10,23,39,.75));margin:0 0 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}}
+.month-progress-header{{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}}
+.month-progress-kicker{{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:4px}}
+.month-progress-title{{font-size:1rem;font-weight:800;color:var(--text)}}
+.month-progress-pct{{font-size:1.6rem;font-weight:900;color:var(--accent);line-height:1}}
+.month-progress-bar{{height:12px;background:#15243c;border-radius:999px;overflow:hidden}}
+.month-progress-fill{{height:100%;border-radius:999px;background:linear-gradient(90deg,#2ee6a6,#1abf8a);box-shadow:0 0 0 1px rgba(255,255,255,.05) inset}}
+.month-progress-meta{{margin-top:10px;color:var(--muted);font-size:.86rem}}
 .stats-grid{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}
 .stat-item{{background:#0b1727;border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,.04)}}
 .stat-value{{font-size:1.5rem;font-weight:800;color:var(--accent);line-height:1}}
@@ -343,6 +401,11 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
       <div class="stat-revenue">Scheduled: <strong>${h['sched_revenue']:,.0f}</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
       {branch_rows or '<div class="item"><div class="item-title">No branch data</div></div>'}
+    </div>
+
+    <div class="card">
+      <h2><span class="emoji">💵</span> Monthly Invoiced vs Goal</h2>
+      {month_progress_html}
     </div>
 
     <div class="card">

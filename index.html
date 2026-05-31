@@ -42,6 +42,14 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
 .health-status{font-size:1rem;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em}
 .health-rate{font-size:2rem;font-weight:800;color:#f59e0b;margin:8px 0 6px}
 .health-meta{color:var(--muted);font-size:.82rem}
+.month-progress-card{border-radius:16px;padding:18px;border:1px solid rgba(99,146,191,.22);background:linear-gradient(180deg,rgba(10,23,39,.95),rgba(10,23,39,.75));margin:0 0 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.month-progress-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.month-progress-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:4px}
+.month-progress-title{font-size:1rem;font-weight:800;color:var(--text)}
+.month-progress-pct{font-size:1.6rem;font-weight:900;color:var(--accent);line-height:1}
+.month-progress-bar{height:12px;background:#15243c;border-radius:999px;overflow:hidden}
+.month-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#2ee6a6,#1abf8a);box-shadow:0 0 0 1px rgba(255,255,255,.05) inset}
+.month-progress-meta{margin-top:10px;color:var(--muted);font-size:.86rem}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .stat-item{background:#0b1727;border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,.04)}
 .stat-value{font-size:1.5rem;font-weight:800;color:var(--accent);line-height:1}
@@ -123,6 +131,22 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
     </div>
 
     <div class="card">
+      <h2><span class="emoji">💵</span> Monthly Invoiced vs Goal</h2>
+      
+      <div class="month-progress-card">
+        <div class="month-progress-header">
+          <div>
+            <div class="month-progress-kicker">Monthly Invoiced vs Goal</div>
+            <div class="month-progress-title">May 2026</div>
+          </div>
+          <div class="month-progress-pct">95%</div>
+        </div>
+        <div class="month-progress-bar"><div class="month-progress-fill" style="width:95%;"></div></div>
+        <div class="month-progress-meta">$1,211,602 invoiced of $1,272,135 goal</div>
+      </div>
+    </div>
+
+    <div class="card">
       <h2><span class="emoji">🛡️</span> Safety</h2>
       
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=">
@@ -161,7 +185,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   </div>
 
   <div class="footer" id="footer">
-    Refreshed May 30 2026 08:05 PM PT
+    Refreshed May 30 2026 08:11 PM PT
   </div>
 </div>
 <script>
