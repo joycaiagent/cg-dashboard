@@ -355,12 +355,16 @@ def build_html(events, stats, safety_incidents):
             safety_rows += f'''
         <div class="item urgent" data-id="{sid}" data-subject="{subj}" data-from="{frm}" data-date="{date}" data-summary="{summary}" data-manager="{manager}" data-email-type="{esc(email_type)}" data-description="{body_plain}" data-link="{esc(inc.get('link',''))}">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ {subj} <span class="chevron">▸</span></div>
-            <div class="item-meta">{type_badge} · {frm} · {date}</div>
+            <div class="item-meta">{type_badge} · {frm} · {date} <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 {manager_line}
                 {summary_line}
                 <div style="margin-bottom:10px;">{body_plain or 'No additional details available.'}</div>
-                <button class="review-btn" onclick="reviewIncident(this,'{sid}')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'{sid}','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'{sid}','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'{sid}','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>'''
     else:
@@ -529,12 +533,13 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
     detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
   }}
 
-  // Safety: review & close incident — saves to localStorage (works on any server)
-  function reviewIncident(btn, id) {{
+  // Safety: write state to backend tracker; open/modified duty items stay visible,
+  // closed items are hidden.
+  function setSafetyState(btn, id, action) {{
     btn.textContent = '⏳ Saving...';
     btn.disabled = true;
     var item = btn.closest('.item');
-    var payload = {{id: id}};
+    var payload = {{id: id, action: action}};
     if (item) {{
       payload.subject = item.dataset.subject || '';
       payload.from = item.dataset.from || '';
@@ -545,41 +550,60 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
       payload.emailType = item.dataset.emailType || '';
       payload.link = item.dataset.link || '';
     }}
-    // Save to localStorage so the static GitHub Pages copy also remembers it
-    try {{
-      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
-      if (!reviewed.includes(id)) reviewed.push(id);
-      localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
-    }} catch(e) {{}}
-    // Try POST to backend tracker (localhost:8000); fall back to localStorage only
+    if (action === 'modified_duty' && item) {{
+      var badge = item.querySelector('.safety-state-badge');
+      if (badge) badge.style.display = 'inline-flex';
+    }}
+    if (action === 'open' && item) {{
+      var badge = item.querySelector('.safety-state-badge');
+      if (badge) badge.style.display = 'none';
+    }}
+    if (action === 'closed') {{
+      try {{
+        var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+        if (!reviewed.includes(id)) reviewed.push(id);
+        localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
+      }} catch(e) {{}}
+    }}
     fetch('/api/incident/review', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
       body: JSON.stringify(payload)
     }}).then(function(res) {{
-      if (!res.ok) throw new Error('backend review save failed');
+      if (!res.ok) throw new Error('backend save failed');
       return res.json();
     }}).then(function(data) {{
-      if (data && data.success) {{
-        if (item) item.remove();
-        return;
+      if (!data || !data.success) throw new Error('backend save failed');
+      if (action === 'closed' && item) item.remove();
+      if (item && action !== 'closed') {{
+        btn.textContent = action === 'modified_duty' ? '🩼 Modified Duty Saved' : '↩️ Modified Duty Cleared';
       }}
-      throw new Error('backend review save failed');
     }}).catch(function() {{
-      // Backend not available — localStorage saved; remove item now
-      if (item) item.remove();
+      if (action === 'closed' && item) item.remove();
+      if (item && action !== 'closed') {{
+        btn.textContent = action === 'modified_duty' ? '🩼 Modified Duty Saved' : '↩️ Modified Duty Cleared';
+      }}
     }});
   }}
 
-  // On load: hide any previously reviewed incidents (backend first, then localStorage)
+  // On load: hide any previously closed incidents (backend first, then localStorage)
   (function() {{
-    function hideReviewed(ids) {{
+    function hideClosed(ids) {{
       ids.forEach(function(id) {{
         var el = document.querySelector('[data-id="' + id + '"]');
         if (el) el.remove();
       }});
     }}
-    function mergeReviewed(ids) {{
+    function applyModifiedDuty(ids) {{
+      ids.forEach(function(id) {{
+        var el = document.querySelector('[data-id="' + id + '"]');
+        if (el) {{
+          var badge = el.querySelector('.safety-state-badge');
+          if (badge) badge.style.display = 'inline-flex';
+        }}
+      }});
+    }}
+    function mergeClosed(ids) {{
       try {{
         var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
         ids.forEach(function(id) {{ if (!reviewed.includes(id)) reviewed.push(id); }});
@@ -588,16 +612,19 @@ h1{{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;le
     }}
     try {{
       var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
-      hideReviewed(reviewed);
+      hideClosed(reviewed);
     }} catch(e) {{}}
     fetch('/api/incident/reviews')
       .then(function(res) {{ if (!res.ok) throw new Error('tracker unavailable'); return res.json(); }})
       .then(function(data) {{
-        var ids = (data && data.success && Array.isArray(data.items)) ? data.items.map(function(it) {{ return it.id; }}).filter(Boolean) : [];
-        if (ids.length) {{
-          hideReviewed(ids);
-          mergeReviewed(ids);
+        var items = (data && data.success && Array.isArray(data.items)) ? data.items : [];
+        var closedIds = items.filter(function(it) {{ return (it.status || 'closed') === 'closed'; }}).map(function(it) {{ return it.id; }}).filter(Boolean);
+        var dutyIds = items.filter(function(it) {{ return it.status === 'modified_duty'; }}).map(function(it) {{ return it.id; }}).filter(Boolean);
+        if (closedIds.length) {{
+          hideClosed(closedIds);
+          mergeClosed(closedIds);
         }}
+        if (dutyIds.length) applyModifiedDuty(dutyIds);
       }})
       .catch(function() {{}});
   }})();

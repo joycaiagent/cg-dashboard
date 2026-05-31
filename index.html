@@ -167,62 +167,86 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
       
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=" data-subject="Fw: Margarito Martinez Sprained Ankle 5/20/26" data-from="Jose Contreras" data-date="2026-05-20" data-summary="[Forwarded to Joy by Jose] | Employee: Margarito Martinez Sprained | Reported by: Juan Carlos Garcia | Francisco is on the way to pick him up and take him to the clinic per his request." data-manager="Juan Carlos Garcia" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Margarito Martinez Sprained | Reported by: Juan Carlos Garcia | Francisco is on the way to pick him up and take him to the clinic per his request." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Margarito Martinez Sprained Ankle 5/20/26 <span class="chevron">▸</span></div>
-            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-20</div>
+            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-20 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Juan Carlos Garcia</div>
                 <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Margarito Martinez Sprained | Reported by: Juan Carlos Garcia | Francisco is on the way to pick him up and take him to the clinic per his request.</div>
                 <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Margarito Martinez Sprained | Reported by: Juan Carlos Garcia | Francisco is on the way to pick him up and take him to the clinic per his request.</div>
-                <button class="review-btn" onclick="reviewIncident(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO5AAA=" data-subject="FW: Broken Window - The Commons " data-from="Jose Contreras" data-date="2026-05-19" data-summary="[Forwarded to Joy by Jose] | Employee: Broken Window | Reported by: Juan Hurbano Martinez | Just received a call from my foreman saying one of the guys broke a window over at Commons. Attached are the" data-manager="Juan Hurbano Martinez" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Broken Window | Reported by: Juan Hurbano Martinez | Just received a call from my foreman saying one of the guys broke a window over at Commons. Attached are the photos sent to me." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO5AAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ FW: Broken Window - The Commons  <span class="chevron">▸</span></div>
-            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-19</div>
+            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-19 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Juan Hurbano Martinez</div>
                 <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Broken Window | Reported by: Juan Hurbano Martinez | Just received a call from my foreman saying one of the guys broke a window over at Commons. Attached are the</div>
                 <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Broken Window | Reported by: Juan Hurbano Martinez | Just received a call from my foreman saying one of the guys broke a window over at Commons. Attached are the photos sent to me.</div>
-                <button class="review-btn" onclick="reviewIncident(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO5AAA=')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO5AAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO5AAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO5AAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO4AAA=" data-subject="FW: Vicente Molquecho fall 5-19-26" data-from="Jose Contreras" data-date="2026-05-19" data-summary="[Forwarded to Joy by Jose] | Employee: Vicente Molquecho fall | Reported by: Fernando Vega | I need to send an employee to the clinic. He fell while pruning a Bamboo. He was standing on top of the tra" data-manager="Fernando Vega" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Vicente Molquecho fall | Reported by: Fernando Vega | I need to send an employee to the clinic. He fell while pruning a Bamboo. He was standing on top of the trailer." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO4AAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ FW: Vicente Molquecho fall 5-19-26 <span class="chevron">▸</span></div>
-            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-19</div>
+            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-19 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Fernando Vega</div>
                 <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Vicente Molquecho fall | Reported by: Fernando Vega | I need to send an employee to the clinic. He fell while pruning a Bamboo. He was standing on top of the tra</div>
                 <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Vicente Molquecho fall | Reported by: Fernando Vega | I need to send an employee to the clinic. He fell while pruning a Bamboo. He was standing on top of the trailer.</div>
-                <button class="review-btn" onclick="reviewIncident(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO4AAA=')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO4AAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO4AAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDO4AAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=" data-subject="Re: Incident Report For Osvaldo Soto " data-from="Jose Contreras" data-date="2026-05-14" data-summary="Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo." data-manager="Jose Contreras" data-email-type="reply" data-description="Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Re: Incident Report For Osvaldo Soto  <span class="chevron">▸</span></div>
-            <div class="item-meta">↩️ Reply · Jose Contreras · 2026-05-14</div>
+            <div class="item-meta">↩️ Reply · Jose Contreras · 2026-05-14 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Jose Contreras</div>
                 <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo.</div>
                 <div style="margin-bottom:10px;">Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo.</div>
-                <button class="review-btn" onclick="reviewIncident(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=" data-subject="Fw: Incident Report For Osvaldo Soto " data-from="Jose Contreras" data-date="2026-05-13" data-summary="[Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo." data-manager="Alejandro Ulloa" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Incident Report For Osvaldo Soto  <span class="chevron">▸</span></div>
-            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-13</div>
+            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-13 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Alejandro Ulloa</div>
                 <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo.</div>
                 <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo.</div>
-                <button class="review-btn" onclick="reviewIncident(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=" data-subject="Jose Contreras | Injury | 5/11/26 " data-from="Erika Jauregui" data-date="2026-05-11" data-summary="Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we" data-manager="Erika Jauregui" data-email-type="original" data-description="Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we found out." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Jose Contreras | Injury | 5/11/26  <span class="chevron">▸</span></div>
-            <div class="item-meta">📩 Original · Erika Jauregui · 2026-05-11</div>
+            <div class="item-meta">📩 Original · Erika Jauregui · 2026-05-11 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Erika Jauregui</div>
                 <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we</div>
                 <div style="margin-bottom:10px;">Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we found out.</div>
-                <button class="review-btn" onclick="reviewIncident(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Review &amp; Close</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
             </div>
         </div>
     </div>
@@ -234,7 +258,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   </div>
 
   <div class="footer" id="footer">
-    Refreshed May 31 2026 01:46 PM PT
+    Refreshed May 31 2026 02:56 PM PT
   </div>
 </div>
 <script>
@@ -263,12 +287,13 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
     detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
   }
 
-  // Safety: review & close incident — saves to localStorage (works on any server)
-  function reviewIncident(btn, id) {
+  // Safety: write state to backend tracker; open/modified duty items stay visible,
+  // closed items are hidden.
+  function setSafetyState(btn, id, action) {
     btn.textContent = '⏳ Saving...';
     btn.disabled = true;
     var item = btn.closest('.item');
-    var payload = {id: id};
+    var payload = {id: id, action: action};
     if (item) {
       payload.subject = item.dataset.subject || '';
       payload.from = item.dataset.from || '';
@@ -279,41 +304,60 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
       payload.emailType = item.dataset.emailType || '';
       payload.link = item.dataset.link || '';
     }
-    // Save to localStorage so the static GitHub Pages copy also remembers it
-    try {
-      var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
-      if (!reviewed.includes(id)) reviewed.push(id);
-      localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
-    } catch(e) {}
-    // Try POST to backend tracker (localhost:8000); fall back to localStorage only
+    if (action === 'modified_duty' && item) {
+      var badge = item.querySelector('.safety-state-badge');
+      if (badge) badge.style.display = 'inline-flex';
+    }
+    if (action === 'open' && item) {
+      var badge = item.querySelector('.safety-state-badge');
+      if (badge) badge.style.display = 'none';
+    }
+    if (action === 'closed') {
+      try {
+        var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
+        if (!reviewed.includes(id)) reviewed.push(id);
+        localStorage.setItem('cg_reviewed', JSON.stringify(reviewed));
+      } catch(e) {}
+    }
     fetch('/api/incident/review', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(payload)
     }).then(function(res) {
-      if (!res.ok) throw new Error('backend review save failed');
+      if (!res.ok) throw new Error('backend save failed');
       return res.json();
     }).then(function(data) {
-      if (data && data.success) {
-        if (item) item.remove();
-        return;
+      if (!data || !data.success) throw new Error('backend save failed');
+      if (action === 'closed' && item) item.remove();
+      if (item && action !== 'closed') {
+        btn.textContent = action === 'modified_duty' ? '🩼 Modified Duty Saved' : '↩️ Modified Duty Cleared';
       }
-      throw new Error('backend review save failed');
     }).catch(function() {
-      // Backend not available — localStorage saved; remove item now
-      if (item) item.remove();
+      if (action === 'closed' && item) item.remove();
+      if (item && action !== 'closed') {
+        btn.textContent = action === 'modified_duty' ? '🩼 Modified Duty Saved' : '↩️ Modified Duty Cleared';
+      }
     });
   }
 
-  // On load: hide any previously reviewed incidents (backend first, then localStorage)
+  // On load: hide any previously closed incidents (backend first, then localStorage)
   (function() {
-    function hideReviewed(ids) {
+    function hideClosed(ids) {
       ids.forEach(function(id) {
         var el = document.querySelector('[data-id="' + id + '"]');
         if (el) el.remove();
       });
     }
-    function mergeReviewed(ids) {
+    function applyModifiedDuty(ids) {
+      ids.forEach(function(id) {
+        var el = document.querySelector('[data-id="' + id + '"]');
+        if (el) {
+          var badge = el.querySelector('.safety-state-badge');
+          if (badge) badge.style.display = 'inline-flex';
+        }
+      });
+    }
+    function mergeClosed(ids) {
       try {
         var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
         ids.forEach(function(id) { if (!reviewed.includes(id)) reviewed.push(id); });
@@ -322,16 +366,19 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
     }
     try {
       var reviewed = JSON.parse(localStorage.getItem('cg_reviewed') || '[]');
-      hideReviewed(reviewed);
+      hideClosed(reviewed);
     } catch(e) {}
     fetch('/api/incident/reviews')
       .then(function(res) { if (!res.ok) throw new Error('tracker unavailable'); return res.json(); })
       .then(function(data) {
-        var ids = (data && data.success && Array.isArray(data.items)) ? data.items.map(function(it) { return it.id; }).filter(Boolean) : [];
-        if (ids.length) {
-          hideReviewed(ids);
-          mergeReviewed(ids);
+        var items = (data && data.success && Array.isArray(data.items)) ? data.items : [];
+        var closedIds = items.filter(function(it) { return (it.status || 'closed') === 'closed'; }).map(function(it) { return it.id; }).filter(Boolean);
+        var dutyIds = items.filter(function(it) { return it.status === 'modified_duty'; }).map(function(it) { return it.id; }).filter(Boolean);
+        if (closedIds.length) {
+          hideClosed(closedIds);
+          mergeClosed(closedIds);
         }
+        if (dutyIds.length) applyModifiedDuty(dutyIds);
       })
       .catch(function() {});
   })();

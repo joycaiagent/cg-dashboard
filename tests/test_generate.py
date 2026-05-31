@@ -152,4 +152,6 @@ def test_build_html_shows_safety_summary_and_manager():
     assert '👔 Manager: Antonio Taylor' in html
     assert '📩 Original' in html
     assert 'data-manager="Antonio Taylor"' in html
+    assert '🩼 Modified Duty' in html
+    assert '✅ Close Incident' in html
     assert '/api/incident/reviews' in html

@@ -2,7 +2,7 @@
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import datetime
 import json, os
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs
 
 ROOT = os.path.dirname(__file__)
 STATE_DIR = os.path.join(ROOT, '..', 'state')
@@ -41,10 +41,23 @@ def _review_timestamp():
     return datetime.datetime.now(datetime.timezone.utc).isoformat().replace('+00:00', 'Z')
 
 
-def record_safety_review(payload, tracker_path=REVIEW_FILE, source='dashboard-review', reviewed_at=None):
-    """Persist a reviewed safety incident to the backend tracker.
+def _normalize_status(action):
+    action = (action or 'closed').strip().lower()
+    if action in ('modified_duty', 'modified-duty', 'modified duty'):
+        return 'modified_duty'
+    if action in ('clear_modified_duty', 'clear-modified-duty', 'remove_modified_duty', 'remove-modified-duty', 'open'):
+        return 'open'
+    return 'closed'
 
-    The tracker stores one row per incident id and upserts on repeat reviews.
+
+def record_safety_review(payload, tracker_path=REVIEW_FILE, source='dashboard-review', reviewed_at=None):
+    """Persist a safety incident state to the backend tracker.
+
+    The tracker stores one row per incident id and upserts on repeat actions.
+    status values:
+      - open
+      - modified_duty
+      - closed
     """
     if not isinstance(payload, dict):
         raise TypeError('payload must be a dict')
@@ -54,11 +67,20 @@ def record_safety_review(payload, tracker_path=REVIEW_FILE, source='dashboard-re
         raise ValueError('missing incident id')
 
     reviewed_at = reviewed_at or _review_timestamp()
+    status = _normalize_status(payload.get('action') or payload.get('status'))
+    ts_field = 'reviewed_at' if status == 'closed' else ('modified_duty_at' if status == 'modified_duty' else 'updated_at')
     entry = {
         'id': incident_id,
-        'reviewed_at': reviewed_at,
+        'status': status,
+        ts_field: reviewed_at,
         'source': source,
     }
+    if status == 'closed':
+        entry['closed_at'] = reviewed_at
+    if status == 'modified_duty':
+        duty = payload.get('modified_duty') or payload.get('duty') or payload.get('restriction') or payload.get('notes')
+        if duty not in (None, ''):
+            entry['modified_duty'] = duty
     for key in ('subject', 'from', 'date', 'description', 'summary', 'manager', 'emailType', 'link'):
         value = payload.get(key)
         if value not in (None, ''):
@@ -70,6 +92,9 @@ def record_safety_review(payload, tracker_path=REVIEW_FILE, source='dashboard-re
         if existing.get('id') == incident_id:
             merged = dict(existing)
             merged.update(entry)
+            # preserve prior modified duty note when clearing/opening/closing unless explicitly replaced
+            if 'modified_duty' not in merged and existing.get('modified_duty'):
+                merged['modified_duty'] = existing['modified_duty']
             items[idx] = merged
             entry = merged
             updated = True

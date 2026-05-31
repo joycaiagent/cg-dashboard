@@ -46,6 +46,40 @@ def test_record_safety_review_upserts_backend_tracker(tmp_path):
     assert data[0]['manager'] == 'Juan Hurbano Martinez'
 
 
+def test_record_safety_review_can_track_modified_duty_then_close(tmp_path):
+    tracker = tmp_path / 'reviewed-safety.json'
+
+    modified = server.record_safety_review(
+        {
+            'id': 'inc-999',
+            'subject': 'Sprained ankle at clinic',
+            'summary': 'Employee went to clinic and is on modified duty.',
+            'modified_duty': 'No walking over 15 minutes',
+            'action': 'modified_duty',
+        },
+        tracker_path=tracker,
+        reviewed_at='2026-05-21T10:00:00Z',
+    )
+    closed = server.record_safety_review(
+        {
+            'id': 'inc-999',
+            'action': 'closed',
+        },
+        tracker_path=tracker,
+        reviewed_at='2026-05-22T10:00:00Z',
+    )
+
+    assert modified['status'] == 'modified_duty'
+    assert modified['modified_duty'] == 'No walking over 15 minutes'
+    assert closed['status'] == 'closed'
+    assert closed['closed_at'] == '2026-05-22T10:00:00Z'
+
+    data = json.loads(tracker.read_text())
+    assert data[0]['id'] == 'inc-999'
+    assert data[0]['status'] == 'closed'
+    assert data[0]['modified_duty'] == 'No walking over 15 minutes'
+
+
 def test_load_reviewed_safety_returns_empty_list_when_tracker_missing(tmp_path):
     tracker = tmp_path / 'reviewed-safety.json'
 
