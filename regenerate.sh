@@ -1,7 +1,7 @@
 #!/bin/bash
 # Regenerate CG dashboard and push to GitHub (called by OpenClaw cron)
 set -e
-cd /Users/aiagent/.openclaw/workspace/cg-dashboard
+cd /Users/aiagent/.hermes/workspaces/cg-landscape/cg-dashboard
 git pull origin main --quiet 2>/dev/null || true
 python3 generate.py
 git add index.html
