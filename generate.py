@@ -134,6 +134,32 @@ def get_ops_health():
         'week_start': start, 'week_end': end,
     }
 
+def _infer_safety_status(item):
+    text = ' '.join(str(item.get(k) or '') for k in ('subject', 'description', 'summary')).lower()
+    modified_keywords = [
+        'modified duty', 'light duty', 'restricted duty', 'restricted work',
+        'modified work', 'no walking more than', 'no walking', 'no lifting more than',
+        'limited duty', 'duty restrictions', 'return to work', 'rtw'
+    ]
+    if any(k in text for k in modified_keywords):
+        note = item.get('modified_duty') or item.get('restriction') or item.get('summary') or item.get('description') or ''
+        return {
+            **item,
+            'status': 'modified_duty',
+            'modified_duty': note,
+        }
+    return item
+
+
+def _annotate_safety_items(items):
+    out = []
+    for item in items or []:
+        if not isinstance(item, dict):
+            continue
+        out.append(_infer_safety_status(item))
+    return out
+
+
 def get_safety():
     """Return unreviewed safety items.
     Prefer the scanner output because it includes the original incident summary,
@@ -145,7 +171,7 @@ def get_safety():
             capture_output=True, text=True, timeout=30
         )
         if result.stdout.strip():
-            return json.loads(result.stdout.strip())
+            return _annotate_safety_items(json.loads(result.stdout.strip()))
     except Exception as e:
         print(f'Safety scan error: {e}')
 
@@ -165,7 +191,7 @@ def get_safety():
                 desc = (it.get('description') or '').lower()
                 blob = subj + ' ' + desc
                 if any(k in blob for k in safety_kw):
-                    out.append({
+                    out.append(_infer_safety_status({
                         'id': it.get('id'),
                         'subject': it.get('subject'),
                         'from': it.get('from'),
@@ -174,7 +200,7 @@ def get_safety():
                         'manager': it.get('manager') or '',
                         'emailType': it.get('emailType') or '',
                         'summary': it.get('summary') or it.get('description') or ''
-                    })
+                    }))
             return out
     except Exception as e:
         print(f'Failed to read safety queue: {e}')
@@ -352,10 +378,12 @@ def build_html(events, stats, safety_incidents):
             type_badge = '🔄 Forwarded' if email_type == 'forwarded' else ('↩️ Reply' if email_type == 'reply' else '📩 Original')
             manager_line = f'<div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: {manager}</div>' if manager else ''
             summary_line = f'<div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> {summary}</div>' if summary else ''
+            safety_status = (inc.get('status') or '').lower()
+            badge_style = 'inline-flex' if safety_status == 'modified_duty' else 'none'
             safety_rows += f'''
         <div class="item urgent" data-id="{sid}" data-subject="{subj}" data-from="{frm}" data-date="{date}" data-summary="{summary}" data-manager="{manager}" data-email-type="{esc(email_type)}" data-description="{body_plain}" data-link="{esc(inc.get('link',''))}">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ {subj} <span class="chevron">▸</span></div>
-            <div class="item-meta">{type_badge} · {frm} · {date} <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
+            <div class="item-meta">{type_badge} · {frm} · {date} <span class="safety-state-badge" style="display:{badge_style};margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
             <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
                 {manager_line}
                 {summary_line}

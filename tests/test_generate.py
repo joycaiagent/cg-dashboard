@@ -155,3 +155,32 @@ def test_build_html_shows_safety_summary_and_manager():
     assert '🩼 Modified Duty' in html
     assert '✅ Close Incident' in html
     assert '/api/incident/reviews' in html
+
+
+def test_get_safety_auto_detects_modified_duty_from_scanner_text():
+    payload = [{
+        'subject': 'FW: Margarito Martinez Sprained Ankle 5/20/26',
+        'from': 'josecontreras@cglandscape.net',
+        'date': '2026-05-20',
+        'description': 'Employee Margarito Martinez is on modified duty. No walking more than 15 minutes.',
+        'emailType': 'forwarded',
+        'manager': 'Juan Carlos Garcia',
+        'summary': 'Employee Margarito Martinez is on modified duty. No walking more than 15 minutes.'
+    }]
+
+    class FakeRunResult:
+        def __init__(self, stdout):
+            self.stdout = stdout
+
+    original_run = generate.subprocess.run
+    generate.subprocess.run = lambda *args, **kwargs: FakeRunResult(json.dumps(payload))
+    try:
+        items = generate.get_safety()
+    finally:
+        generate.subprocess.run = original_run
+
+    assert len(items) == 1
+    assert items[0]['status'] == 'modified_duty'
+    assert 'modified duty' in items[0]['summary'].lower()
+    assert items[0]['modified_duty']
+    assert items[0]['manager'] == 'Juan Carlos Garcia'
