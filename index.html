@@ -38,9 +38,9 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
 .item-title{font-weight:600;display:flex;align-items:center;gap:8px}
 .item-meta{color:var(--muted);font-size:.82rem;margin-top:6px}
 .chevron{margin-left:auto;color:var(--muted);font-size:.8rem}
-.health-card{border-radius:16px;padding:18px;text-align:center;border:1px solid #f59e0b;background:#f59e0b18;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-.health-status{font-size:1rem;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em}
-.health-rate{font-size:2rem;font-weight:800;color:#f59e0b;margin:8px 0 6px}
+.health-card{border-radius:16px;padding:18px;text-align:center;border:1px solid #ef4444;background:#ef444418;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.health-status{font-size:1rem;font-weight:800;color:#ef4444;text-transform:uppercase;letter-spacing:.08em}
+.health-rate{font-size:2rem;font-weight:800;color:#ef4444;margin:8px 0 6px}
 .health-meta{color:var(--muted);font-size:.82rem}
 .month-progress-card{border-radius:16px;padding:18px;border:1px solid rgba(99,146,191,.22);background:linear-gradient(180deg,rgba(10,23,39,.95),rgba(10,23,39,.75));margin:0 0 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
 .month-progress-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
@@ -69,7 +69,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   <header>
     <div>
       <h1><img class="brand-logo" src="cg-logo.png" alt="CG Landscape logo"> CG Landscape — Daily Ops</h1>
-      <div class="subtitle">Sunday, May 31, 2026</div>
+      <div class="subtitle">Monday, June 01, 2026</div>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
@@ -79,54 +79,46 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
       <h2><span class="emoji">📅</span> Next 3 Days</h2>
       
         <div class="item" id="sched-0">
-            <div class="item-title">Jun 01, 2026 13:00 — STAFF MEETING  <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 Anaheim Office</div>
-        </div>
-        <div class="item" id="sched-1">
-            <div class="item-title">Jun 01, 2026 13:00 — Leadership Meeting <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 Conference Room</div>
-        </div>
-        <div class="item" id="sched-2">
-            <div class="item-title">Jun 01, 2026 14:00 — Review Labor Cost/Price for 2027 <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 </div>
+            <div class="item-title">Jun 02, 2026 13:00 — Review Labor Cost/Price for 2027 <span class="chevron">▸</span></div>
+            <div class="item-meta">📍 Meeting Room</div>
         </div>
     </div>
 
     <div class="card">
       <h2><span class="emoji">📊</span> This Week Ops Health</h2>
       <div class="health-card">
-        <div class="health-status">Watch</div>
-        <div class="health-rate">54%</div>
-        <div class="health-meta">Week of 2026-05-25 → 2026-05-31</div>
+        <div class="health-status">Alert</div>
+        <div class="health-rate">0%</div>
+        <div class="health-meta">Week of 2026-06-01 → 2026-06-07</div>
       </div>
       <div class="stats-grid">
-        <div class="stat-item"><div class="stat-value">600</div><div class="stat-label">Done</div></div>
-        <div class="stat-item"><div class="stat-value">28</div><div class="stat-label">Canceled</div></div>
-        <div class="stat-item"><div class="stat-value">100</div><div class="stat-label">Open</div></div>
-        <div class="stat-item"><div class="stat-value">1101</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-value">2</div><div class="stat-label">Done</div></div>
+        <div class="stat-item"><div class="stat-value">82</div><div class="stat-label">Canceled</div></div>
+        <div class="stat-item"><div class="stat-value">703</div><div class="stat-label">Open</div></div>
+        <div class="stat-item"><div class="stat-value">1689</div><div class="stat-label">Total</div></div>
       </div>
-      <div class="stat-revenue">Scheduled: <strong>$266,886</strong></div>
+      <div class="stat-revenue">Scheduled: <strong>$467,354</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
       
             <div class="branch-row">
                 <div class="branch-name">Anaheim</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:56%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">56% (304/540)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">San Bernardino</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:46%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">46% (119/256)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:0%;background:#ef4444;"></div></div>
+                <div class="branch-pct">0% (1/874)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Los Angeles</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:65%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">65% (116/178)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:0%;background:#ef4444;"></div></div>
+                <div class="branch-pct">0% (1/325)</div>
+            </div>
+            <div class="branch-row">
+                <div class="branch-name">San Bernardino</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:0%;background:#ef4444;"></div></div>
+                <div class="branch-pct">0% (0/261)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Corona</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:49%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">49% (61/124)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:0%;background:#ef4444;"></div></div>
+                <div class="branch-pct">0% (0/229)</div>
             </div>
     </div>
 
@@ -137,12 +129,12 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
         <div class="month-progress-header">
           <div>
             <div class="month-progress-kicker">Monthly Invoiced vs Goal</div>
-            <div class="month-progress-title">May 2026</div>
+            <div class="month-progress-title">June 2026</div>
           </div>
-          <div class="month-progress-pct">92%</div>
+          <div class="month-progress-pct">48%</div>
         </div>
-        <div class="month-progress-bar"><div class="month-progress-fill" style="width:92%;"></div></div>
-        <div class="month-progress-meta">$2,516,198 invoiced of $2,743,533 goal</div>
+        <div class="month-progress-bar"><div class="month-progress-fill" style="width:48%;"></div></div>
+        <div class="month-progress-meta">$1,309,353 invoiced of $2,743,533 goal</div>
       </div>
     </div>
 
@@ -153,18 +145,48 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
         <div class="month-progress-header">
           <div>
             <div class="month-progress-kicker">YTD Invoiced vs Goal</div>
-            <div class="month-progress-title">YTD through May 31, 2026</div>
+            <div class="month-progress-title">YTD through Jun 01, 2026</div>
           </div>
-          <div class="month-progress-pct">91%</div>
+          <div class="month-progress-pct">101%</div>
         </div>
-        <div class="month-progress-bar"><div class="month-progress-fill" style="width:91%;"></div></div>
-        <div class="month-progress-meta">$12,445,236 invoiced of $13,619,951 YTD goal</div>
+        <div class="month-progress-bar"><div class="month-progress-fill" style="width:100%;"></div></div>
+        <div class="month-progress-meta">$13,799,487 invoiced of $13,710,149 YTD goal</div>
       </div>
     </div>
 
     <div class="card">
       <h2><span class="emoji">🛡️</span> Safety</h2>
       
+        <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA=" data-subject="Fw: Edgar Luna finger injury " data-from="Jose Contreras" data-date="2026-06-01" data-summary="[Forwarded to Joy by Jose] | Employee: Edgar Luna finger | Reported by: Juan Leon | Edgar Luna reported that he cut his finger this morning while installing the battery on a sawzall. He has requested " data-manager="Juan Leon" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Edgar Luna finger | Reported by: Juan Leon | Edgar Luna reported that he cut his finger this morning while installing the battery on a sawzall. He has requested medical attention for the injury. Photos of the injury are attached for your review." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Edgar Luna finger injury  <span class="chevron">▸</span></div>
+            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-06-01 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Juan Leon</div>
+                
+                <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Edgar Luna finger | Reported by: Juan Leon | Edgar Luna reported that he cut his finger this morning while installing the battery on a sawzall. He has requested </div>
+                <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Edgar Luna finger | Reported by: Juan Leon | Edgar Luna reported that he cut his finger this morning while installing the battery on a sawzall. He has requested medical attention for the injury. Photos of the injury are attached for your review.</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
+            </div>
+        </div>
+        <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvVAAA=" data-subject="Re: Route 40 stolen equipment " data-from="Jose Contreras" data-date="2026-06-01" data-summary="Reported by: Jose Contreras" data-manager="Jose Contreras" data-email-type="reply" data-description="Reported by: Jose Contreras" data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvVAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Re: Route 40 stolen equipment  <span class="chevron">▸</span></div>
+            <div class="item-meta">↩️ Reply · Jose Contreras · 2026-06-01 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Jose Contreras</div>
+                
+                <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> Reported by: Jose Contreras</div>
+                <div style="margin-bottom:10px;">Reported by: Jose Contreras</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvVAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvVAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvVAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
+            </div>
+        </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA=" data-subject="Fw: Margarito Martinez Sprained Ankle 5/20/26" data-from="Jose Contreras" data-date="2026-05-20" data-summary="[Forwarded to Joy by Jose] | Employee: Margarito Martinez Sprained | Reported by: Juan Carlos Garcia | Francisco is on the way to pick him up and take him to the clinic per his request." data-manager="Juan Carlos Garcia" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Margarito Martinez Sprained | Reported by: Juan Carlos Garcia | Francisco is on the way to pick him up and take him to the clinic per his request." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAdvDPFAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Margarito Martinez Sprained Ankle 5/20/26 <span class="chevron">▸</span></div>
             <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-20 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
@@ -264,7 +286,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   </div>
 
   <div class="footer" id="footer">
-    Refreshed May 31 2026 04:01 PM PT
+    Refreshed Jun 01 2026 04:54 PM PT
   </div>
 </div>
 <script>
