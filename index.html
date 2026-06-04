@@ -69,7 +69,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   <header>
     <div>
       <h1><img class="brand-logo" src="cg-logo.png" alt="CG Landscape logo"> CG Landscape — Daily Ops</h1>
-      <div class="subtitle">Wednesday, June 03, 2026</div>
+      <div class="subtitle">Thursday, June 04, 2026</div>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
@@ -79,14 +79,10 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
       <h2><span class="emoji">📅</span> Next 3 Days</h2>
       
         <div class="item" id="sched-0">
-            <div class="item-title">Jun 04, 2026 15:00 — Landscape Monthly Invoicing Meeting <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 Conference Room</div>
-        </div>
-        <div class="item" id="sched-1">
             <div class="item-title">Jun 05, 2026 10:00 — Weathermatic: CG Landscape (Business Review and Controller Audit- Continued) <span class="chevron">▸</span></div>
             <div class="item-meta">📍 Microsoft Teams Meeting</div>
         </div>
-        <div class="item" id="sched-2">
+        <div class="item" id="sched-1">
             <div class="item-title">Jun 05, 2026 11:00 — Weekly sales Call  <span class="chevron">▸</span></div>
             <div class="item-meta">📍 Microsoft Teams Meeting</div>
         </div>
@@ -133,7 +129,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
         <div class="month-progress-header">
           <div>
             <div class="month-progress-kicker">YTD Invoiced vs Goal</div>
-            <div class="month-progress-title">YTD through Jun 03, 2026</div>
+            <div class="month-progress-title">YTD through Jun 04, 2026</div>
           </div>
           <div class="month-progress-pct">0%</div>
         </div>
@@ -145,6 +141,21 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
     <div class="card">
       <h2><span class="emoji">🛡️</span> Safety</h2>
       
+        <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAo91JaAAA=" data-subject="FW: Pedro Andres Report of Injury 06-03-26" data-from="Jose Contreras" data-date="2026-06-04" data-summary="[Forwarded to Joy by Jose] | Employee: Pedro Andres Report" data-manager="" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Pedro Andres Report" data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAo91JaAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
+            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ FW: Pedro Andres Report of Injury 06-03-26 <span class="chevron">▸</span></div>
+            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-06-04 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
+            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
+                
+                
+                <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Pedro Andres Report</div>
+                <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Pedro Andres Report</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAo91JaAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
+                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAo91JaAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
+                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAo91JaAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
+                </div>
+            </div>
+        </div>
         <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA=" data-subject="Fw: Edgar Luna finger injury " data-from="Jose Contreras" data-date="2026-06-01" data-summary="[Forwarded to Joy by Jose] | Employee: Edgar Luna finger | Reported by: Juan Leon | Edgar Luna reported that he cut his finger this morning while installing the battery on a sawzall. He has requested " data-manager="Juan Leon" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Edgar Luna finger | Reported by: Juan Leon | Edgar Luna reported that he cut his finger this morning while installing the battery on a sawzall. He has requested medical attention for the injury. Photos of the injury are attached for your review." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAlxKvXAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
             <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Edgar Luna finger injury  <span class="chevron">▸</span></div>
             <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-06-01 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
@@ -220,51 +231,6 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
                 </div>
             </div>
         </div>
-        <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=" data-subject="Re: Incident Report For Osvaldo Soto " data-from="Jose Contreras" data-date="2026-05-14" data-summary="Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo." data-manager="Jose Contreras" data-email-type="reply" data-description="Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
-            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Re: Incident Report For Osvaldo Soto  <span class="chevron">▸</span></div>
-            <div class="item-meta">↩️ Reply · Jose Contreras · 2026-05-14 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
-            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
-                <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Jose Contreras</div>
-                
-                <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo.</div>
-                <div style="margin-bottom:10px;">Employee: Osvaldo Soto | Reported by: Jose Contreras | No injury was reported by Osvaldo.</div>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
-                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
-                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KIAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
-                </div>
-            </div>
-        </div>
-        <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=" data-subject="Fw: Incident Report For Osvaldo Soto " data-from="Jose Contreras" data-date="2026-05-13" data-summary="[Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo." data-manager="Alejandro Ulloa" data-email-type="forwarded" data-description="[Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
-            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Fw: Incident Report For Osvaldo Soto  <span class="chevron">▸</span></div>
-            <div class="item-meta">🔄 Forwarded · Jose Contreras · 2026-05-13 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
-            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
-                <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Alejandro Ulloa</div>
-                
-                <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> [Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo.</div>
-                <div style="margin-bottom:10px;">[Forwarded to Joy by Jose] | Employee: Osvaldo Soto | Reported by: Alejandro Ulloa | No injury was reported by Osvaldo.</div>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
-                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
-                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAaT4KHAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
-                </div>
-            </div>
-        </div>
-        <div class="item urgent" data-id="AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=" data-subject="Jose Contreras | Injury | 5/11/26 " data-from="Erika Jauregui" data-date="2026-05-11" data-summary="Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we" data-manager="Erika Jauregui" data-email-type="original" data-description="Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we found out." data-link="https://outlook.office365.com/owa/?ItemID=AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA%3D&amp;exvsurl=1&amp;viewmodel=ReadMessageItem">
-            <div class="item-title" onclick="toggleSafetyDetail(this)">⚠️ Jose Contreras | Injury | 5/11/26  <span class="chevron">▸</span></div>
-            <div class="item-meta">📩 Original · Erika Jauregui · 2026-05-11 <span class="safety-state-badge" style="display:none;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:800;background:#243b5b;color:var(--accent);">🩼 Modified Duty</span></div>
-            <div class="safety-detail" style="display:none;margin-top:10px;padding:12px;background:#0a1929;border-radius:8px;font-size:0.85rem;line-height:1.6;">
-                <div style="margin-bottom:6px;font-size:0.8rem;color:#00d4aa;">👔 Manager: Erika Jauregui</div>
-                
-                <div style="margin-bottom:8px;padding:10px 12px;background:#0f2035;border:1px solid rgba(46,230,166,.18);border-radius:8px;color:var(--text);font-size:0.85rem;"><strong>Brief description:</strong> Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we</div>
-                <div style="margin-bottom:10px;">Employee: Jose Contreras | Reported by: Erika Jauregui | Jose was injured and fell off his bike today; he failed to report the accident when it happened. He was seen with a blue eye and that is how we found out.</div>
-                <div style="display:flex;flex-wrap:wrap;gap:8px;">
-                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=','modified_duty')" style="background:#0d6efd;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">🩼 Mark Modified Duty</button>
-                  <button class="safety-action-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=','open')" style="background:#35506f;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.82rem;">↩️ Clear Modified Duty</button>
-                  <button class="review-btn" onclick="setSafetyState(this,'AAMkADIzN2NjZGY2LTNkOGItNDk3Yy1hZWQ4LTgwNWU1NTdmZTJiNABGAAAAAABJrZ9QYFESQKtRz5yUKko2BwAFOLnegfVcRpFAwXSqdmvNAAAAAAEMAAAFOLnegfVcRpFAwXSqdmvNAAAY2iUYAAA=','closed')" style="background:#00d4aa;color:#0a1929;border:none;padding:7px 16px;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem;">✅ Close Incident</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="card">
@@ -274,7 +240,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   </div>
 
   <div class="footer" id="footer">
-    Refreshed Jun 03 2026 04:01 PM PT
+    Refreshed Jun 04 2026 04:01 PM PT
   </div>
 </div>
 <script>
