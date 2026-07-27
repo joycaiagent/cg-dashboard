@@ -38,9 +38,9 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
 .item-title{font-weight:600;display:flex;align-items:center;gap:8px}
 .item-meta{color:var(--muted);font-size:.82rem;margin-top:6px}
 .chevron{margin-left:auto;color:var(--muted);font-size:.8rem}
-.health-card{border-radius:16px;padding:18px;text-align:center;border:1px solid #f59e0b;background:#f59e0b18;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-.health-status{font-size:1rem;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em}
-.health-rate{font-size:2rem;font-weight:800;color:#f59e0b;margin:8px 0 6px}
+.health-card{border-radius:16px;padding:18px;text-align:center;border:1px solid #ef4444;background:#ef444418;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.health-status{font-size:1rem;font-weight:800;color:#ef4444;text-transform:uppercase;letter-spacing:.08em}
+.health-rate{font-size:2rem;font-weight:800;color:#ef4444;margin:8px 0 6px}
 .health-meta{color:var(--muted);font-size:.82rem}
 .month-progress-card{border-radius:16px;padding:18px;border:1px solid rgba(99,146,191,.22);background:linear-gradient(180deg,rgba(10,23,39,.95),rgba(10,23,39,.75));margin:0 0 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
 .month-progress-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
@@ -69,7 +69,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   <header>
     <div>
       <h1><img class="brand-logo" src="cg-logo.png" alt="CG Landscape logo"> CG Landscape — Daily Ops</h1>
-      <div class="subtitle">Sunday, July 26, 2026</div>
+      <div class="subtitle">Monday, July 27, 2026</div>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
@@ -79,58 +79,46 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
       <h2><span class="emoji">📅</span> Next 3 Days</h2>
       
         <div class="item" id="sched-0">
-            <div class="item-title">Jul 27, 2026 10:00 —  In-person interview with Elizabeth Pinzon for HR Payroll Generalist (Payroll &amp; Culture Generalist) Bilingual Spanish  <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 524 E. Julianna St., Unit 1 Anaheim, CA 92801</div>
-        </div>
-        <div class="item" id="sched-1">
-            <div class="item-title">Jul 27, 2026 11:00 — Alcon Landscape Walk <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 15800 Alton Pkwy, Irvine, CA 92618, USA</div>
-        </div>
-        <div class="item" id="sched-2">
-            <div class="item-title">Jul 27, 2026 13:00 — Leadership Meeting <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 Conference Room</div>
-        </div>
-        <div class="item" id="sched-3">
             <div class="item-title">Jul 28, 2026 10:00 — 2nd Interview - Jannet Ayala <span class="chevron">▸</span></div>
-            <div class="item-meta">📍 Microsoft Teams Meeting</div>
+            <div class="item-meta">📍 524 E. Julianna St., Unit 1 Anaheim, CA 92801</div>
         </div>
     </div>
 
     <div class="card">
       <h2><span class="emoji">📊</span> This Week Ops Health</h2>
       <div class="health-card">
-        <div class="health-status">Watch</div>
-        <div class="health-rate">55%</div>
-        <div class="health-meta">Week of 2026-07-20 → 2026-07-26</div>
+        <div class="health-status">Alert</div>
+        <div class="health-rate">1%</div>
+        <div class="health-meta">Week of 2026-07-27 → 2026-08-02</div>
       </div>
       <div class="stats-grid">
-        <div class="stat-item"><div class="stat-value">785</div><div class="stat-label">Done</div></div>
-        <div class="stat-item"><div class="stat-value">31</div><div class="stat-label">Canceled</div></div>
-        <div class="stat-item"><div class="stat-value">18</div><div class="stat-label">Open</div></div>
-        <div class="stat-item"><div class="stat-value">1430</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-value">10</div><div class="stat-label">Done</div></div>
+        <div class="stat-item"><div class="stat-value">91</div><div class="stat-label">Canceled</div></div>
+        <div class="stat-item"><div class="stat-value">230</div><div class="stat-label">Open</div></div>
+        <div class="stat-item"><div class="stat-value">1290</div><div class="stat-label">Total</div></div>
       </div>
-      <div class="stat-revenue">Scheduled: <strong>$296,670</strong></div>
+      <div class="stat-revenue">Scheduled: <strong>$469,723</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
       
             <div class="branch-row">
                 <div class="branch-name">Anaheim</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:53%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">53% (409/767)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">Los Angeles</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:52%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">52% (145/278)</div>
-            </div>
-            <div class="branch-row">
-                <div class="branch-name">San Bernardino</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:47%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">47% (112/236)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:1%;background:#ef4444;"></div></div>
+                <div class="branch-pct">1% (7/625)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Corona</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:80%;background:#f59e0b;"></div></div>
-                <div class="branch-pct">80% (119/148)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:0%;background:#ef4444;"></div></div>
+                <div class="branch-pct">0% (0/232)</div>
+            </div>
+            <div class="branch-row">
+                <div class="branch-name">Los Angeles</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:0%;background:#ef4444;"></div></div>
+                <div class="branch-pct">0% (0/221)</div>
+            </div>
+            <div class="branch-row">
+                <div class="branch-name">San Bernardino</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:1%;background:#ef4444;"></div></div>
+                <div class="branch-pct">1% (3/208)</div>
             </div>
     </div>
 
@@ -143,10 +131,10 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
             <div class="month-progress-kicker">Monthly Invoiced vs Goal</div>
             <div class="month-progress-title">July 2026</div>
           </div>
-          <div class="month-progress-pct">83%</div>
+          <div class="month-progress-pct">84%</div>
         </div>
-        <div class="month-progress-bar"><div class="month-progress-fill" style="width:83%;"></div></div>
-        <div class="month-progress-meta">$2,287,343 invoiced of $2,743,533 goal</div>
+        <div class="month-progress-bar"><div class="month-progress-fill" style="width:84%;"></div></div>
+        <div class="month-progress-meta">$2,305,809 invoiced of $2,743,533 goal</div>
       </div>
     </div>
 
@@ -157,12 +145,12 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
         <div class="month-progress-header">
           <div>
             <div class="month-progress-kicker">YTD Invoiced vs Goal</div>
-            <div class="month-progress-title">YTD through Jul 26, 2026</div>
+            <div class="month-progress-title">YTD through Jul 27, 2026</div>
           </div>
-          <div class="month-progress-pct">96%</div>
+          <div class="month-progress-pct">95%</div>
         </div>
-        <div class="month-progress-bar"><div class="month-progress-fill" style="width:96%;"></div></div>
-        <div class="month-progress-meta">$17,874,653 invoiced of $18,671,059 YTD goal</div>
+        <div class="month-progress-bar"><div class="month-progress-fill" style="width:95%;"></div></div>
+        <div class="month-progress-meta">$17,893,119 invoiced of $18,761,257 YTD goal</div>
       </div>
     </div>
 
@@ -178,7 +166,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   </div>
 
   <div class="footer" id="footer">
-    Refreshed Jul 26 2026 04:01 PM PT
+    Refreshed Jul 27 2026 04:01 PM PT
   </div>
 </div>
 <script>
