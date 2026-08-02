@@ -38,9 +38,9 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
 .item-title{font-weight:600;display:flex;align-items:center;gap:8px}
 .item-meta{color:var(--muted);font-size:.82rem;margin-top:6px}
 .chevron{margin-left:auto;color:var(--muted);font-size:.8rem}
-.health-card{border-radius:16px;padding:18px;text-align:center;border:1px solid #ef4444;background:#ef444418;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-.health-status{font-size:1rem;font-weight:800;color:#ef4444;text-transform:uppercase;letter-spacing:.08em}
-.health-rate{font-size:2rem;font-weight:800;color:#ef4444;margin:8px 0 6px}
+.health-card{border-radius:16px;padding:18px;text-align:center;border:1px solid #f59e0b;background:#f59e0b18;margin-bottom:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.health-status{font-size:1rem;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em}
+.health-rate{font-size:2rem;font-weight:800;color:#f59e0b;margin:8px 0 6px}
 .health-meta{color:var(--muted);font-size:.82rem}
 .month-progress-card{border-radius:16px;padding:18px;border:1px solid rgba(99,146,191,.22);background:linear-gradient(180deg,rgba(10,23,39,.95),rgba(10,23,39,.75));margin:0 0 16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
 .month-progress-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
@@ -69,7 +69,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   <header>
     <div>
       <h1><img class="brand-logo" src="cg-logo.png" alt="CG Landscape logo"> CG Landscape — Daily Ops</h1>
-      <div class="subtitle">Saturday, August 01, 2026</div>
+      <div class="subtitle">Sunday, August 02, 2026</div>
     </div>
     <button class="refresh-btn" id="refreshBtn" onclick="hardRefresh()">🔄 Refresh</button>
   </header>
@@ -87,37 +87,37 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
     <div class="card">
       <h2><span class="emoji">📊</span> This Week Ops Health</h2>
       <div class="health-card">
-        <div class="health-status">Alert</div>
-        <div class="health-rate">46%</div>
+        <div class="health-status">Watch</div>
+        <div class="health-rate">52%</div>
         <div class="health-meta">Week of 2026-07-27 → 2026-08-02</div>
       </div>
       <div class="stats-grid">
-        <div class="stat-item"><div class="stat-value">664</div><div class="stat-label">Done</div></div>
+        <div class="stat-item"><div class="stat-value">746</div><div class="stat-label">Done</div></div>
         <div class="stat-item"><div class="stat-value">91</div><div class="stat-label">Canceled</div></div>
         <div class="stat-item"><div class="stat-value">233</div><div class="stat-label">Open</div></div>
-        <div class="stat-item"><div class="stat-value">1433</div><div class="stat-label">Total</div></div>
+        <div class="stat-item"><div class="stat-value">1434</div><div class="stat-label">Total</div></div>
       </div>
-      <div class="stat-revenue">Scheduled: <strong>$356,520</strong></div>
+      <div class="stat-revenue">Scheduled: <strong>$329,598</strong></div>
       <h3 style="color:#00d4aa;font-size:0.85rem;margin:12px 0 6px;">By Branch</h3>
       
             <div class="branch-row">
                 <div class="branch-name">Anaheim</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:42%;background:#ef4444;"></div></div>
-                <div class="branch-pct">42% (296/712)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:52%;background:#f59e0b;"></div></div>
+                <div class="branch-pct">52% (370/712)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Los Angeles</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:71%;background:#ef4444;"></div></div>
-                <div class="branch-pct">71% (178/250)</div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:74%;background:#f59e0b;"></div></div>
+                <div class="branch-pct">74% (186/251)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">Corona</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:35%;background:#ef4444;"></div></div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:35%;background:#f59e0b;"></div></div>
                 <div class="branch-pct">35% (87/247)</div>
             </div>
             <div class="branch-row">
                 <div class="branch-name">San Bernardino</div>
-                <div class="branch-bar-wrap"><div class="branch-bar" style="width:46%;background:#ef4444;"></div></div>
+                <div class="branch-bar-wrap"><div class="branch-bar" style="width:46%;background:#f59e0b;"></div></div>
                 <div class="branch-pct">46% (103/224)</div>
             </div>
     </div>
@@ -145,12 +145,12 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
         <div class="month-progress-header">
           <div>
             <div class="month-progress-kicker">YTD Invoiced vs Goal</div>
-            <div class="month-progress-title">YTD through Aug 01, 2026</div>
+            <div class="month-progress-title">YTD through Aug 02, 2026</div>
           </div>
-          <div class="month-progress-pct">104%</div>
+          <div class="month-progress-pct">103%</div>
         </div>
         <div class="month-progress-bar"><div class="month-progress-fill" style="width:100%;"></div></div>
-        <div class="month-progress-meta">$19,970,674 invoiced of $19,212,249 YTD goal</div>
+        <div class="month-progress-meta">$19,970,674 invoiced of $19,302,447 YTD goal</div>
       </div>
     </div>
 
@@ -166,7 +166,7 @@ h1{display:flex;align-items:center;gap:14px;color:var(--text);font-size:2rem;let
   </div>
 
   <div class="footer" id="footer">
-    Refreshed Aug 01 2026 04:01 PM PT
+    Refreshed Aug 02 2026 04:01 PM PT
   </div>
 </div>
 <script>
